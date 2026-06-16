@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SE-OS — The Solution Engineer's Operating System</title>
+<meta name="description" content="SE-OS: a digital SE team + the surface that drives it. Full capabilities, vision, roadmap, and impact for the Discrete Manufacturing Agentic Center of Excellence." />
+<meta property="og:title" content="SE-OS — The Solution Engineer's Operating System" />
+<meta property="og:description" content="A digital SE team, an outcome-first pipeline, and the window that drives it." />
+<meta property="og:type" content="website" />
+<script>
+  (() => {
+    const param = new URLSearchParams(window.location.search).get("clawpilotTheme");
+    const theme = param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<style>
+:root {
+  color-scheme: light;
+  --cp-bg: #f7f4ef; --cp-bg-elevated: #fcfbf8; --cp-surface: #ffffff; --cp-surface-soft: #f5f5f5;
+  --cp-border: #dedede; --cp-border-strong: #919191; --cp-text: #242424; --cp-text-muted: #5c5c5c;
+  --cp-text-soft: #6f6f6f; --cp-accent: #b11f4b; --cp-accent-hover: #9a1a41;
+  --cp-accent-soft: rgba(177, 31, 75, 0.08); --cp-accent-fg: #ffffff; --cp-success: #16a34a;
+  --cp-danger: #dc2626; --cp-warning: #f59e0b; --cp-link: #0078d4;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12); --cp-highlight: rgba(177, 31, 75, 0.12);
+  --cp-info: #0078d4; --cp-engine: #7c3aed; --cp-framework: #6f6f6f;
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --cp-bg: #3d3b3a; --cp-bg-elevated: #343231; --cp-surface: #292929; --cp-surface-soft: #2e2e2e;
+  --cp-border: #474747; --cp-border-strong: #5f5f5f; --cp-text: #dedede; --cp-text-muted: #919191;
+  --cp-text-soft: #b0b0b0; --cp-accent: #fd8ea1; --cp-accent-hover: #fb7b91;
+  --cp-accent-soft: rgba(253, 142, 161, 0.14); --cp-accent-fg: #1a1a1a; --cp-success: #4ade80;
+  --cp-danger: #f87171; --cp-warning: #fbbf24; --cp-link: #4da6ff;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32); --cp-highlight: rgba(253, 142, 161, 0.12);
+  --cp-info: #4da6ff; --cp-engine: #c4b5fd; --cp-framework: #b0b0b0;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--cp-bg); color: var(--cp-text);
+  font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+}
+.wrap { max-width: 1140px; margin: 0 auto; padding: 0 22px; }
+code { font-family: Consolas, "Courier New", Courier, monospace; font-size: 0.86em; background: var(--cp-surface-soft); padding: 1px 6px; border-radius: 5px; }
+nav.bar { position: sticky; top: 0; z-index: 50; background: var(--cp-bg-elevated); border-bottom: 1px solid var(--cp-border); backdrop-filter: blur(6px); }
+nav.bar .wrap { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.02rem; letter-spacing: -0.01em; }
+.brand .logo { width: 26px; height: 26px; }
+.navlinks { display: flex; gap: 4px; align-items: center; }
+.navlinks a { color: var(--cp-text-muted); text-decoration: none; font-size: 0.86rem; padding: 7px 11px; border-radius: 8px; }
+.navlinks a:hover { color: var(--cp-text); background: var(--cp-surface-soft); }
+.tbtn { cursor: pointer; border: 1px solid var(--cp-border); background: var(--cp-surface); color: var(--cp-text); border-radius: 0.625rem; padding: 6px 11px; font-size: 0.8rem; }
+@media (max-width: 720px){ .navlinks a:not(.tbtn){ display: none; } }
+.hero { padding: 72px 0 50px; text-align: center; position: relative; overflow: hidden; }
+.hero::before { content:""; position:absolute; inset:0; background: radial-gradient(ellipse 60% 50% at 50% 0%, var(--cp-accent-soft), transparent 70%); pointer-events:none; }
+.eyebrow { display: inline-block; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--cp-accent); font-weight: 600; padding: 5px 14px; border: 1px solid var(--cp-accent); border-radius: 999px; margin-bottom: 22px; background: var(--cp-accent-soft); }
+.hero h1 { font-size: clamp(2.1rem, 5vw, 3.4rem); line-height: 1.08; margin: 0 0 18px; letter-spacing: -0.025em; }
+.hero h1 .accent { color: var(--cp-accent); }
+.hero p.lede { font-size: clamp(1.05rem, 2.2vw, 1.3rem); color: var(--cp-text-muted); max-width: 720px; margin: 0 auto 14px; }
+.hero p.sub { font-size: 0.95rem; color: var(--cp-text-soft); max-width: 640px; margin: 0 auto 30px; }
+.cta { display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.btn { display: inline-block; text-decoration: none; font-weight: 600; font-size: 0.92rem; padding: 11px 22px; border-radius: 0.625rem; cursor: pointer; border: 1px solid transparent; }
+.btn.primary { background: var(--cp-accent); color: var(--cp-accent-fg); }
+.btn.primary:hover { background: var(--cp-accent-hover); }
+.btn.ghost { background: var(--cp-surface); color: var(--cp-text); border-color: var(--cp-border); }
+.btn.ghost:hover { border-color: var(--cp-border-strong); }
+.statband { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--cp-border); border: 1px solid var(--cp-border); border-radius: 16px; overflow: hidden; margin: 38px 0 0; }
+.statband .s { background: var(--cp-surface); padding: 22px 16px; text-align: center; }
+.statband .n { font-size: clamp(1.7rem, 4vw, 2.3rem); font-weight: 800; color: var(--cp-accent); letter-spacing: -0.02em; }
+.statband .l { font-size: 0.78rem; color: var(--cp-text-muted); margin-top: 3px; }
+@media (max-width: 680px){ .statband { grid-template-columns: repeat(2,1fr); } }
+section { padding: 56px 0; }
+section.alt { background: var(--cp-bg-elevated); border-top: 1px solid var(--cp-border); border-bottom: 1px solid var(--cp-border); }
+.sectionhead { text-align: center; max-width: 720px; margin: 0 auto 38px; }
+.sectionhead .kick { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--cp-accent); font-weight: 600; }
+.sectionhead h2 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); margin: 8px 0 12px; letter-spacing: -0.02em; }
+.sectionhead p { color: var(--cp-text-muted); font-size: 1.02rem; margin: 0; }
+.halves { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+@media (max-width: 860px){ .halves { grid-template-columns: 1fr; } }
+.half { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 16px; padding: 24px; box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14); position: relative; }
+.half .ic { font-size: 1.7rem; margin-bottom: 10px; }
+.half h3 { margin: 0 0 8px; font-size: 1.18rem; }
+.half p { color: var(--cp-text-muted); font-size: 0.92rem; margin: 0 0 12px; }
+.half .meta { font-size: 0.76rem; color: var(--cp-text-soft); border-top: 1px dashed var(--cp-border); padding-top: 10px; }
+.unlock { margin-top: 26px; background: var(--cp-accent-soft); border: 1px solid var(--cp-accent); border-radius: 16px; padding: 20px 24px; text-align: center; }
+.unlock b { color: var(--cp-accent); }
+.loop { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; margin: 6px auto 0; max-width: 880px; }
+.loop .node { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 12px; padding: 10px 16px; font-weight: 600; font-size: 0.9rem; box-shadow: 0 0 2px rgba(0,0,0,0.1); }
+.loop .node small { display:block; font-weight: 400; font-size: 0.7rem; color: var(--cp-text-soft); }
+.loop .arr { color: var(--cp-accent); font-size: 1.2rem; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin: 0 auto 30px; font-size: 0.82rem; color: var(--cp-text-muted); }
+.legend span { display: inline-flex; align-items: center; gap: 7px; }
+.d { width: 11px; height: 11px; border-radius: 999px; display: inline-block; }
+.d.act { background: var(--cp-success); } .d.inf { background: var(--cp-info); }
+.d.eng { background: var(--cp-engine); } .d.fw { background: var(--cp-framework); }
+.stages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 900px){ .stages { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px){ .stages { grid-template-columns: 1fr; } }
+.stage { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 16px; padding: 18px; box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14); display: flex; flex-direction: column; }
+.stage .sh { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.stage .num { font-size: 0.72rem; font-weight: 700; color: var(--cp-accent-fg); background: var(--cp-accent); border-radius: 8px; padding: 3px 8px; }
+.stage h4 { margin: 0; font-size: 1.05rem; }
+.stage .desc { font-size: 0.82rem; color: var(--cp-text-soft); margin: 2px 0 12px; }
+.stage ul { list-style: none; margin: 0; padding: 0; font-size: 0.85rem; }
+.stage li { display: flex; align-items: flex-start; gap: 8px; padding: 4px 0; border-top: 1px solid var(--cp-surface-soft); }
+.stage li:first-child { border-top: none; }
+.stage li .d { margin-top: 5px; flex-shrink: 0; }
+.agentgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px,1fr)); gap: 10px; }
+.agent { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 12px; padding: 12px 14px; font-size: 0.85rem; }
+.agent b { display: block; font-size: 0.9rem; }
+.agent span { color: var(--cp-text-soft); font-size: 0.76rem; }
+.impact { display: grid; grid-template-columns: 1.1fr 1fr; gap: 22px; align-items: start; }
+@media (max-width: 860px){ .impact { grid-template-columns: 1fr; } }
+.outcometable { width: 100%; border-collapse: collapse; font-size: 0.88rem; background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 12px; overflow: hidden; }
+.outcometable th { background: var(--cp-surface-soft); text-align: left; padding: 11px 13px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--cp-text-soft); }
+.outcometable td { padding: 10px 13px; border-top: 1px solid var(--cp-border); }
+.outcometable td b { color: var(--cp-accent); }
+.bigimpact { display: flex; flex-direction: column; gap: 14px; }
+.imcard { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 14px; padding: 18px; box-shadow: 0 0 2px rgba(0,0,0,0.1); }
+.imcard .big { font-size: 1.9rem; font-weight: 800; color: var(--cp-accent); letter-spacing: -0.02em; }
+.imcard .cap { font-size: 0.85rem; color: var(--cp-text-muted); }
+.timeline { position: relative; margin: 0 auto; max-width: 860px; }
+.tl { display: grid; grid-template-columns: 130px 1fr; gap: 18px; padding: 18px 0; border-top: 1px solid var(--cp-border); }
+.tl:first-child { border-top: none; }
+.tl .phase { font-weight: 700; color: var(--cp-accent); font-size: 0.92rem; }
+.tl .phase small { display: block; color: var(--cp-text-soft); font-weight: 400; font-size: 0.74rem; }
+.tl ul { margin: 0; padding-left: 18px; font-size: 0.9rem; color: var(--cp-text-muted); }
+.tl ul li { margin-bottom: 5px; }
+.tl ul li b { color: var(--cp-text); }
+@media (max-width: 600px){ .tl { grid-template-columns: 1fr; gap: 6px; } }
+.visiongrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+@media (max-width: 860px){ .visiongrid { grid-template-columns: 1fr; } }
+.vcard { background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 14px; padding: 18px; }
+.vcard .vn { font-size: 0.72rem; color: var(--cp-accent); font-weight: 700; letter-spacing: 0.08em; }
+.vcard h4 { margin: 4px 0 7px; font-size: 1.02rem; }
+.vcard p { margin: 0; font-size: 0.86rem; color: var(--cp-text-muted); }
+footer { background: var(--cp-bg-elevated); border-top: 1px solid var(--cp-border); padding: 34px 0; text-align: center; color: var(--cp-text-soft); font-size: 0.84rem; }
+footer .fbrand { font-weight: 700; color: var(--cp-text); }
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.in { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<nav class="bar">
+  <div class="wrap">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="var(--cp-accent)"/><circle cx="16" cy="16" r="3.2" fill="white"/><g fill="none" stroke="white" stroke-width="1.6"><ellipse cx="16" cy="16" rx="13" ry="5.2"/><ellipse cx="16" cy="16" rx="13" ry="5.2" transform="rotate(60 16 16)"/><ellipse cx="16" cy="16" rx="13" ry="5.2" transform="rotate(120 16 16)"/></g></svg>
+      SE-OS
+    </div>
+    <div class="navlinks">
+      <a href="#what">What it is</a>
+      <a href="#spine">Capabilities</a>
+      <a href="#engine">The Engine</a>
+      <a href="#impact">Impact</a>
+      <a href="#roadmap">Roadmap</a>
+      <button class="tbtn" onclick="(function(){var d=document.documentElement;var t=d.getAttribute('data-theme')==='dark'?'light':'dark';d.setAttribute('data-theme',t);})()">&#9680; Theme</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Discrete Manufacturing &middot; Agentic Center of Excellence</span>
+    <h1>The Solution Engineer's <span class="accent">Operating System</span></h1>
+    <p class="lede">A digital SE team that builds, an outcome-first pipeline that governs, and the window that drives it &mdash; turning a single SE's workflow into a repeatable, autonomous delivery machine.</p>
+    <p class="sub">SE-OS started as one SE's productivity system. It's becoming the central resource hub for every Manufacturing Solution Engineer at Microsoft.</p>
+    <div class="cta">
+      <a class="btn primary" href="#spine">Explore the capabilities</a>
+      <a class="btn ghost" href="#roadmap">See the vision</a>
+    </div>
+    <div class="statband">
+      <div class="s"><div class="n" data-count="25">~25</div><div class="l">specialist agents</div></div>
+      <div class="s"><div class="n" data-count="9">9</div><div class="l">delivery stages</div></div>
+      <div class="s"><div class="n" data-count="10">10</div><div class="l">built engagements</div></div>
+      <div class="s"><div class="n">&infin;</div><div class="l">runs while you're in meetings</div></div>
+    </div>
+  </div>
+</header>
+
+<section id="what" class="alt">
+  <div class="wrap">
+    <div class="sectionhead reveal">
+      <div class="kick">The model</div>
+      <h2>Two halves and the tissue between them</h2>
+      <p>SE-OS is an <b>engine</b> that does the work, a <b>window</b> that drives and shows it, and the <b>connective tissue</b> of standards and contracts that keeps every output consistent.</p>
+    </div>
+    <div class="halves">
+      <div class="half reveal">
+        <div class="ic">&#129302;</div>
+        <h3>The Engine</h3>
+        <p>The CoE "digital SE team" &mdash; ~25 specialist agents running an outcome-first pipeline on GitHub Actions. Frames the problem, designs, builds, validates &mdash; autonomously.</p>
+        <div class="meta">Personas: PM &middot; Architect &middot; SMEs &middot; D365 / Power Platform / AI / Analytics devs &middot; QA &middot; Security &middot; Outcome Validator</div>
+      </div>
+      <div class="half reveal">
+        <div class="ic">&#129518;</div>
+        <h3>The Window</h3>
+        <p>The SE-OS app &mdash; Launcher, Command Center, Workshop, Signal Lab, and the live Agent Work board. Where the SE captures signals, dispatches work, and watches the team build.</p>
+        <div class="meta">Per-SE: connect your own repo + identity &middot; signals &rarr; dispatch &rarr; board &rarr; steer &rarr; outcome</div>
+      </div>
+      <div class="half reveal">
+        <div class="ic">&#129516;</div>
+        <h3>The Connective Tissue</h3>
+        <p>The standards, contracts, capture facilities, media catalog, and leave-behind system that make every engagement come out consistent &mdash; and reusable across SEs.</p>
+        <div class="meta">Engagement output standard &middot; dual-audience docs &middot; classification-gated sharing &middot; pattern library</div>
+      </div>
+    </div>
+    <div class="unlock reveal">
+      <b>The unlock:</b> connect the Window to the Engine. Every action &mdash; start a project, dispatch a build, log a signal &mdash; triggers the agent team and the app <i>shows the work happening</i>. That closed loop is live today.
+    </div>
+    <div class="loop reveal" style="margin-top:28px">
+      <div class="node">Signal<small>email &middot; Teams &middot; meeting</small></div>
+      <span class="arr">&rarr;</span>
+      <div class="node">Dispatch<small>files a CoE issue</small></div>
+      <span class="arr">&rarr;</span>
+      <div class="node">Board<small>live agent status</small></div>
+      <span class="arr">&rarr;</span>
+      <div class="node">Steer<small>you approve / push</small></div>
+      <span class="arr">&rarr;</span>
+      <div class="node">Outcome<small>validated asset</small></div>
+    </div>
+  </div>
+</section>
+
+<section id="spine">
+  <div class="wrap">
+    <div class="sectionhead reveal">
+      <div class="kick">Full capabilities</div>
+      <h2>The SE Delivery Spine &mdash; 9 stages</h2>
+      <p>The whole job is one flow: from a raw signal to a validated outcome to a reusable pattern. Every capability SE-OS has maps to a stage.</p>
+    </div>
+    <div class="legend reveal">
+      <span><i class="d act"></i> Actionable &mdash; triggers work / produces an asset</span>
+      <span><i class="d inf"></i> Informational &mdash; built, shows state</span>
+      <span><i class="d eng"></i> Engine &mdash; runs autonomously</span>
+      <span><i class="d fw"></i> Framework &mdash; standard / contract in place</span>
+    </div>
+    <div class="stages">
+
+      <div class="stage reveal">
+        <div class="sh"><span class="num">01</span><h4>Capture</h4></div>
+        <div class="desc">Signal / idea / transcript in</div>
+        <ul>
+          <li><i class="d act"></i> Signal detection (email/Teams/call &rarr; typed signal)</li>
+          <li><i class="d act"></i> Command-chat omni-input (paste &rarr; classify)</li>
+          <li><i class="d eng"></i> Meeting / Stream / Outlook harvest</li>
+          <li><i class="d act"></i> RAPP transcript &rarr; deployable agent</li>
+          <li><i class="d act"></i> Intake queue / idea logging</li>
+        </ul>
+      </div>
+
+      <div class="stage reveal">
+        <div class="sh"><span class="num">02</span><h4>Define</h4></div>
+        <div class="desc">Outcome framing &amp; scope</div>
+        <ul>
+          <li><i class="d eng"></i> Outcome-first framing (problem + KPI <i>before</i> build)</li>
+          <li><i class="d act"></i> New-project scaffold</li>
+          <li><i class="d inf"></i> Project definition &rarr; spec (Workshop)</li>
+          <li><i class="d fw"></i> Customer outcome scoping contracts</li>
+        </ul>
+      </div>
+
+      <div class="stage reveal">
+        <div class="sh"><span class="num">03</span><h4>Design</h4></div>
+        <div class="desc">Architecture &middot; pattern &middot; feasibility</div>
+        <ul>
+          <li><i class="d eng"></i> Architecture / solution design</li>
+          <li><i class="d eng"></i> Feasibility review &rarr; risk / guardrails</li>
+          <li><i class="d eng"></i> Security review</li>
+          <li><i class="d fw"></i> Asset-lifecycle contracts</li>
+        </ul>
+      </div>
+
+      <div class="stage reveal">
+        <div class="sh"><span class="num">04</span><h4>Build</h4></div>
+        <div class="desc">Agents &middot; D365 &middot; Power Platform &middot; demo</div>
+        <ul>
+          <li><i class="d eng"></i> Agent code &middot; D365 config &middot; PP flows/apps</li>
+          <li><i class="d eng"></i> AI / Copilot Studio build</li>
+          <li><i class="d act"></i> RAPP full pipeline (14 steps)</li>
+          <li><i class="d eng"></i> Quick-demo builder / demo factory</li>
+        </ul>
+      </div>
+
+      <div class="stage reveal">
+        <div class="sh"><span class="num">05</span><h4>Prove</h4></div>
+        <div class="desc">Demo &middot; POC &middot; validation</div>
+        <ul>
+          <li><i class="d eng"></i> Customer-persona / Playwright tests</li>
+          <li><i class="d eng"></i> QA engineering</li>
+          <li><i class="d eng"></i> Outcome validation (before close)</li>
+          <li><i class="d inf"></i> Demo lab / environment readiness</li>
+        </ul>
+      </div>
+
+      <div class="stage reveal">
+        <div class="sh"><span class="num">06</span><h4>Package</h4></div>
+        <div class="desc">Leave-behind &middot; storyboard &middot; media</div>
+        <ul>
+          <li><i class="d act"></i> Media Catalog (screenshots / reels / recaps)</li>
+          <li><i class="d fw"></i> Demo storyboard &rarr; SE + customer copy</li>
+          <li><i class="d fw"></i> Dual-audience docs &middot; leave-behind menu</li>
+          <li><i class="d act"></i> Deck Kit &middot; Tokenomics / value deck</li>
+        </ul>
+      </div>
+
+      <div class="stage reveal">
+        <div class="sh"><span class="num">07</span><h4>Deliver</h4></div>
+        <div class="desc">Share &middot; handoff &middot; recap</div>
+        <ul>
+          <li><i class="d act"></i> Secure external share (classification-gated)</li>
+          <li><i class="d act"></i> Solution download (managed solution)</li>
+          <li><i class="d act"></i> Post-demo recap email + SOP</li>
+          <li><i class="d fw"></i> Internal SE&rarr;SE / Architect handoff</li>
+        </ul>
+      </div>
+
+      <div class="stage reveal">
+        <div class="sh"><span class="num">08</span><h4>Harvest</h4></div>
+        <div class="desc">Outcomes &middot; patterns &middot; reuse</div>
+        <ul>
+          <li><i class="d act"></i> Resource Capture (intake + harvest)</li>
+          <li><i class="d act"></i> Use-case harvester</li>
+          <li><i class="d eng"></i> Impact / value-proof capture</li>
+          <li><i class="d inf"></i> Reuse Library / App Store</li>
+        </ul>
+      </div>
+
+      <div class="stage reveal">
+        <div class="sh"><span class="num">09</span><h4>Standardize</h4></div>
+        <div class="desc">Patterns &rarr; frameworks</div>
+        <ul>
+          <li><i class="d fw"></i> Cross-customer pattern library</li>
+          <li><i class="d act"></i> Engagement catalog + module registry</li>
+          <li><i class="d eng"></i> SOP library</li>
+          <li><i class="d act"></i> Decision briefs (the SE steering loop)</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="engine" class="alt">
+  <div class="wrap">
+    <div class="sectionhead reveal">
+      <div class="kick">The autonomous engine</div>
+      <h2>A digital SE team that runs without you</h2>
+      <p>~25 named specialist agents organized as an outcome-first pipeline. Nothing is "done" until the outcome is validated against the business problem and KPI it was framed with.</p>
+    </div>
+    <div class="agentgrid reveal">
+      <div class="agent"><b>Orchestrator</b><span>routes &middot; standup &middot; steering</span></div>
+      <div class="agent"><b>Outcome Framer</b><span>problem + KPI before build</span></div>
+      <div class="agent"><b>PM</b><span>plan &middot; priority &middot; digest</span></div>
+      <div class="agent"><b>SME</b><span>business process &middot; use cases</span></div>
+      <div class="agent"><b>Architect</b><span>solution design &middot; stack</span></div>
+      <div class="agent"><b>D365 Dev</b><span>Dataverse &middot; provisioning</span></div>
+      <div class="agent"><b>Power Platform Dev</b><span>Copilot Studio &middot; flows &middot; apps</span></div>
+      <div class="agent"><b>AI Specialist</b><span>Foundry &middot; prompts &middot; RAG</span></div>
+      <div class="agent"><b>Python Dev</b><span>Functions &middot; runner &middot; CI</span></div>
+      <div class="agent"><b>Analytics Dev</b><span>dashboards &middot; Power BI</span></div>
+      <div class="agent"><b>UX Designer</b><span>wireframes &middot; card specs</span></div>
+      <div class="agent"><b>QA Engineer</b><span>test plans &middot; Playwright</span></div>
+      <div class="agent"><b>Security Reviewer</b><span>secrets &middot; auth &middot; CORS</span></div>
+      <div class="agent"><b>Customer Persona</b><span>scenario simulation</span></div>
+      <div class="agent"><b>Outcome Validator</b><span>signs off before close</span></div>
+      <div class="agent"><b>Decision Briefer</b><span>3-option steering cards</span></div>
+    </div>
+    <div class="unlock reveal" style="margin-top:26px; text-align:left">
+      <b>Outcome-first discipline:</b> every issue must carry a defined business problem, success criteria, and KPI <i>before</i> any build work. When a decision is needed, the engine posts a 3-option decision brief and flags <code>needs-se-input</code> &mdash; surfacing only the calls that need a human. Everything else, it runs.
+    </div>
+  </div>
+</section>
+
+<section id="impact">
+  <div class="wrap">
+    <div class="sectionhead reveal">
+      <div class="kick">Impact</div>
+      <h2>Why it matters</h2>
+      <p>SE-OS exists to multiply every SE's output &mdash; faster, more consistent delivery that traces back to a real manufacturer outcome.</p>
+    </div>
+    <div class="impact">
+      <div class="reveal">
+        <table class="outcometable">
+          <thead><tr><th>Manufacturer outcome</th><th>Metric</th><th>Demo scenario</th></tr></thead>
+          <tbody>
+            <tr><td><b>Reduce service cost</b></td><td>Cost / case, handle time</td><td>AI case triage, self-service warranty</td></tr>
+            <tr><td><b>First-contact resolution</b></td><td>FCR %, escalation rate</td><td>Copilot-assisted case resolution</td></tr>
+            <tr><td><b>Accelerate field service</b></td><td>MTTR, dispatch time</td><td>AI work-order routing, proactive alerts</td></tr>
+            <tr><td><b>Grow channel revenue</b></td><td>Deal-reg rate, portal adoption</td><td>Distributor self-service portal</td></tr>
+            <tr><td><b>Reduce RMA / returns</b></td><td>Return rate, processing time</td><td>Agentic RMA automation</td></tr>
+            <tr><td><b>Order velocity</b></td><td>Lead-to-order cycle time</td><td>CRM automation, CPQ integration</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:0.82rem;color:var(--cp-text-soft);margin-top:10px">Every SE-OS output is framed against one of these &mdash; the business outcome and KPI, not just the technical steps.</p>
+      </div>
+      <div class="bigimpact reveal">
+        <div class="imcard"><div class="big">10</div><div class="cap">customer engagements built to "engagement-guide" depth &mdash; Tennant, Carrier, Vermeer, TE Connectivity, Fortune Brands, Rheem, Ascend, Zurn/Elkay, AES, SMA4.</div></div>
+        <div class="imcard"><div class="big">1 &rarr; many</div><div class="cap">designed to scale from one SE's system to every Manufacturing SE &mdash; per-SE repo + identity, shared persona team, one pattern flywheel.</div></div>
+        <div class="imcard"><div class="big">while you're away</div><div class="cap">the engine works on tasks in the background, surfacing only the decisions that need you &mdash; on the board, in Teams, or on mobile.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="roadmap" class="alt">
+  <div class="wrap">
+    <div class="sectionhead reveal">
+      <div class="kick">Vision &amp; roadmap</div>
+      <h2>Where this goes</h2>
+      <p>From a connected loop today to an engine that runs whole engagements end-to-end &mdash; and lifts every SE in the practice.</p>
+    </div>
+
+    <div class="visiongrid reveal" style="margin-bottom:36px">
+      <div class="vcard"><div class="vn">01</div><h4>AI automates process + decisioning</h4><p>The outcome-first pipeline already encodes the decisioning. Wire it to real engagements; surface only the calls that need a human.</p></div>
+      <div class="vcard"><div class="vn">02</div><h4>Accelerate delivery at all costs</h4><p>Every framework/engine stage becomes one-click. The storyboard &rarr; media &rarr; leave-behind chain already proves the pattern.</p></div>
+      <div class="vcard"><div class="vn">03</div><h4>Model every workflow</h4><p>Each stage becomes a machine-readable contract with typed inputs/outputs/assets &mdash; so the engine can run a project end-to-end.</p></div>
+      <div class="vcard"><div class="vn">04</div><h4>Harvest patterns across builds</h4><p>Resource Capture + use-case harvester + outcome logs collect the raw material; a pattern-miner turns builds into frameworks.</p></div>
+      <div class="vcard"><div class="vn">05</div><h4>Multi-SE value harvest</h4><p>Per-SE context cards + onboarding + reuse library make every SE productive &mdash; and their engagements feed the same flywheel.</p></div>
+      <div class="vcard"><div class="vn">06</div><h4>Higher service to the customer</h4><p>Standardized leave-behinds, faster delivery, validated outcomes &mdash; the customer-facing payoff of everything above.</p></div>
+    </div>
+
+    <div class="timeline reveal">
+      <div class="tl">
+        <div class="phase">Now <small>shipped / live</small></div>
+        <ul>
+          <li><b>Closed loop live:</b> signal &rarr; dispatch &rarr; board &rarr; steer &rarr; lifecycle phases, deployed.</li>
+          <li><b>The engine runs</b> autonomously on GitHub Actions; decision briefs flag <code>needs-se-input</code>.</li>
+          <li><b>10 engagements built</b>; engagement catalog + media catalog + secure sharing in place.</li>
+        </ul>
+      </div>
+      <div class="tl">
+        <div class="phase">Next <small>in motion</small></div>
+        <ul>
+          <li><b>Window &rarr; Engine, fully wired:</b> every informational view becomes an actionable trigger.</li>
+          <li><b>Signals as the front door</b> &mdash; intake moves upstream of issues.</li>
+          <li><b>Estimation as a callable tool</b> that surfaces at the right moment (Tokenomics).</li>
+          <li><b>Surface-agnostic HITL</b> &mdash; decisions reach you on the board, Teams, or mobile.</li>
+        </ul>
+      </div>
+      <div class="tl">
+        <div class="phase">Horizon <small>the vision</small></div>
+        <ul>
+          <li><b>End-to-end autonomy</b> &mdash; the engine runs a whole engagement, you steer the decisions.</li>
+          <li><b>Every Manufacturing SE</b> onboarded &mdash; shared team, per-SE context, one flywheel.</li>
+          <li><b>Hosted engine</b> + machine-readable workflow model &mdash; portable beyond one SE's footprint.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><span class="fbrand">SE-OS</span> &mdash; The Solution Engineer's Operating System &middot; Discrete Manufacturing Agentic Center of Excellence</p>
+    <p>Built by and for Microsoft Manufacturing Solution Engineers. Overview &amp; roadmap &mdash; internal.</p>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  const cio = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target; const target = parseInt(el.dataset.count, 10);
+      const prefix = el.textContent.trim().startsWith('~') ? '~' : '';
+      let n = 0; const step = Math.max(1, Math.ceil(target / 28));
+      const tick = () => { n += step; if (n >= target) { el.textContent = prefix + target; } else { el.textContent = prefix + n; requestAnimationFrame(tick); } };
+      tick(); cio.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('[data-count]').forEach(el => cio.observe(el));
+</script>
+</body>
+</html>
