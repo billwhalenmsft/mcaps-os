@@ -8,6 +8,7 @@
 <meta property="og:title" content="SE-OS — The Solution Engineer's Operating System" />
 <meta property="og:description" content="A digital SE team, an outcome-first pipeline, and the window that drives it." />
 <meta property="og:type" content="website" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 23 23'%3E%3Crect x='1' y='1' width='10' height='10' fill='%23F25022'/%3E%3Crect x='12' y='1' width='10' height='10' fill='%237FBA00'/%3E%3Crect x='1' y='12' width='10' height='10' fill='%2300A4EF'/%3E%3Crect x='12' y='12' width='10' height='10' fill='%23FFB900'/%3E%3C/svg%3E" />
 <script>
   (() => {
     const param = new URLSearchParams(window.location.search).get("clawpilotTheme");
@@ -18,23 +19,25 @@
 <style>
 :root {
   color-scheme: light;
-  --cp-bg: #f7f4ef; --cp-bg-elevated: #fcfbf8; --cp-surface: #ffffff; --cp-surface-soft: #f5f5f5;
-  --cp-border: #dedede; --cp-border-strong: #919191; --cp-text: #242424; --cp-text-muted: #5c5c5c;
-  --cp-text-soft: #6f6f6f; --cp-accent: #b11f4b; --cp-accent-hover: #9a1a41;
-  --cp-accent-soft: rgba(177, 31, 75, 0.08); --cp-accent-fg: #ffffff; --cp-success: #16a34a;
-  --cp-danger: #dc2626; --cp-warning: #f59e0b; --cp-link: #0078d4;
-  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12); --cp-highlight: rgba(177, 31, 75, 0.12);
-  --cp-info: #0078d4; --cp-engine: #7c3aed; --cp-framework: #6f6f6f;
+  --cp-bg: #faf9f8; --cp-bg-elevated: #ffffff; --cp-surface: #ffffff; --cp-surface-soft: #f3f2f1;
+  --cp-border: #e1dfdd; --cp-border-strong: #c8c6c4; --cp-text: #201f1e; --cp-text-muted: #605e5c;
+  --cp-text-soft: #797775; --cp-accent: #0078d4; --cp-accent-hover: #106ebe;
+  --cp-accent-soft: rgba(0, 120, 212, 0.08); --cp-accent-fg: #ffffff; --cp-success: #107c10;
+  --cp-danger: #d13438; --cp-warning: #f7a800; --cp-link: #0067b8;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.10); --cp-highlight: rgba(0, 120, 212, 0.12);
+  --cp-info: #0078d4; --cp-engine: #5c2e91; --cp-framework: #797775;
+  --ms-orange: #f25022; --ms-green: #7fba00; --ms-blue: #00a4ef; --ms-yellow: #ffb900;
 }
 html[data-theme="dark"] {
   color-scheme: dark;
-  --cp-bg: #3d3b3a; --cp-bg-elevated: #343231; --cp-surface: #292929; --cp-surface-soft: #2e2e2e;
-  --cp-border: #474747; --cp-border-strong: #5f5f5f; --cp-text: #dedede; --cp-text-muted: #919191;
-  --cp-text-soft: #b0b0b0; --cp-accent: #fd8ea1; --cp-accent-hover: #fb7b91;
-  --cp-accent-soft: rgba(253, 142, 161, 0.14); --cp-accent-fg: #1a1a1a; --cp-success: #4ade80;
-  --cp-danger: #f87171; --cp-warning: #fbbf24; --cp-link: #4da6ff;
-  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32); --cp-highlight: rgba(253, 142, 161, 0.12);
-  --cp-info: #4da6ff; --cp-engine: #c4b5fd; --cp-framework: #b0b0b0;
+  --cp-bg: #1b1a19; --cp-bg-elevated: #201f1e; --cp-surface: #252423; --cp-surface-soft: #2d2c2b;
+  --cp-border: #3b3a39; --cp-border-strong: #565451; --cp-text: #f3f2f1; --cp-text-muted: #c8c6c4;
+  --cp-text-soft: #a19f9d; --cp-accent: #50b0ff; --cp-accent-hover: #6cbcff;
+  --cp-accent-soft: rgba(80, 176, 255, 0.16); --cp-accent-fg: #11100f; --cp-success: #6bb700;
+  --cp-danger: #f1707b; --cp-warning: #ffc83d; --cp-link: #6cb8f6;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.45); --cp-highlight: rgba(80, 176, 255, 0.14);
+  --cp-info: #50b0ff; --cp-engine: #b4a0e5; --cp-framework: #a19f9d;
+  --ms-orange: #f25022; --ms-green: #7fba00; --ms-blue: #2bc4ff; --ms-yellow: #ffc83d;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -47,8 +50,14 @@ body {
 code { font-family: Consolas, "Courier New", Courier, monospace; font-size: 0.86em; background: var(--cp-surface-soft); padding: 1px 6px; border-radius: 5px; }
 nav.bar { position: sticky; top: 0; z-index: 50; background: var(--cp-bg-elevated); border-bottom: 1px solid var(--cp-border); backdrop-filter: blur(6px); }
 nav.bar .wrap { display: flex; align-items: center; justify-content: space-between; height: 56px; }
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.02rem; letter-spacing: -0.01em; }
-.brand .logo { width: 26px; height: 26px; }
+.brand { display: flex; align-items: center; gap: 9px; font-weight: 600; font-size: 1rem; letter-spacing: -0.01em; }
+.brand .logo { width: 22px; height: 22px; flex-shrink: 0; }
+.brand .ms-word { font-weight: 600; color: var(--cp-text); }
+.brand .brand-sep { color: var(--cp-border-strong); font-weight: 300; margin: 0 1px; }
+.brand .brand-prod { font-weight: 700; color: var(--cp-accent); letter-spacing: 0.01em; }
+.ms-topbar { height: 3px; width: 100%; background: linear-gradient(90deg, var(--ms-orange) 0 25%, var(--ms-green) 25% 50%, var(--ms-blue) 50% 75%, var(--ms-yellow) 75% 100%); }
+.ms-rule { display: inline-flex; gap: 4px; margin: 0 auto 18px; }
+.ms-rule i { width: 22px; height: 5px; border-radius: 2px; display: block; }
 .navlinks { display: flex; gap: 4px; align-items: center; }
 .navlinks a { color: var(--cp-text-muted); text-decoration: none; font-size: 0.86rem; padding: 7px 11px; border-radius: 8px; }
 .navlinks a:hover { color: var(--cp-text); background: var(--cp-surface-soft); }
@@ -147,11 +156,13 @@ footer .fbrand { font-weight: 700; color: var(--cp-text); }
 </head>
 <body>
 
+<div class="ms-topbar" aria-hidden="true"></div>
+
 <nav class="bar">
   <div class="wrap">
     <div class="brand">
-      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="var(--cp-accent)"/><circle cx="16" cy="16" r="3.2" fill="white"/><g fill="none" stroke="white" stroke-width="1.6"><ellipse cx="16" cy="16" rx="13" ry="5.2"/><ellipse cx="16" cy="16" rx="13" ry="5.2" transform="rotate(60 16 16)"/><ellipse cx="16" cy="16" rx="13" ry="5.2" transform="rotate(120 16 16)"/></g></svg>
-      SE-OS
+      <svg class="logo" viewBox="0 0 23 23" aria-hidden="true"><rect x="1" y="1" width="10" height="10" fill="#F25022"/><rect x="12" y="1" width="10" height="10" fill="#7FBA00"/><rect x="1" y="12" width="10" height="10" fill="#00A4EF"/><rect x="12" y="12" width="10" height="10" fill="#FFB900"/></svg>
+      <span class="ms-word">Microsoft</span><span class="brand-sep">|</span><span class="brand-prod">SE-OS</span>
     </div>
     <div class="navlinks">
       <a href="#what">What it is</a>
@@ -166,7 +177,7 @@ footer .fbrand { font-weight: 700; color: var(--cp-text); }
 
 <header class="hero">
   <div class="wrap">
-    <span class="eyebrow">Discrete Manufacturing &middot; Agentic Center of Excellence</span>
+    <span class="eyebrow">Microsoft &middot; Discrete Manufacturing Agentic Center of Excellence</span>
     <h1>The Solution Engineer's <span class="accent">Operating System</span></h1>
     <p class="lede">A digital SE team that builds, an outcome-first pipeline that governs, and the window that drives it &mdash; turning a single SE's workflow into a repeatable, autonomous delivery machine.</p>
     <p class="sub">SE-OS started as one SE's productivity system. It's becoming the central resource hub for every Manufacturing Solution Engineer at Microsoft.</p>
@@ -457,8 +468,12 @@ footer .fbrand { font-weight: 700; color: var(--cp-text); }
 
 <footer>
   <div class="wrap">
-    <p><span class="fbrand">SE-OS</span> &mdash; The Solution Engineer's Operating System &middot; Discrete Manufacturing Agentic Center of Excellence</p>
-    <p>Built by and for Microsoft Manufacturing Solution Engineers. Overview &amp; roadmap &mdash; internal.</p>
+    <div class="ms-rule" aria-hidden="true"><i style="background:var(--ms-orange)"></i><i style="background:var(--ms-green)"></i><i style="background:var(--ms-blue)"></i><i style="background:var(--ms-yellow)"></i></div>
+    <p style="display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap">
+      <svg width="20" height="20" viewBox="0 0 23 23" aria-hidden="true" style="vertical-align:middle"><rect x="1" y="1" width="10" height="10" fill="#F25022"/><rect x="12" y="1" width="10" height="10" fill="#7FBA00"/><rect x="1" y="12" width="10" height="10" fill="#00A4EF"/><rect x="12" y="12" width="10" height="10" fill="#FFB900"/></svg>
+      <span class="fbrand">Microsoft</span> &middot; <span class="fbrand">SE-OS</span> &mdash; The Solution Engineer's Operating System
+    </p>
+    <p>Discrete Manufacturing Agentic Center of Excellence &middot; built by and for Microsoft Manufacturing Solution Engineers &middot; internal overview &amp; roadmap.</p>
   </div>
 </footer>
 
