@@ -168,6 +168,7 @@ footer .fbrand { font-weight: 700; color: var(--cp-text); }
       <a href="#what">What it is</a>
       <a href="#spine">Capabilities</a>
       <a href="#engine">The Engine</a>
+      <a href="#tokenomics">Tokenomics</a>
       <a href="#impact">Impact</a>
       <a href="#roadmap">Roadmap</a>
       <button class="tbtn" onclick="(function(){var d=document.documentElement;var t=d.getAttribute('data-theme')==='dark'?'light':'dark';d.setAttribute('data-theme',t);})()">&#9680; Theme</button>
@@ -388,7 +389,58 @@ footer .fbrand { font-weight: 700; color: var(--cp-text); }
   </div>
 </section>
 
-<section id="impact">
+<section id="tokenomics">
+  <div class="wrap">
+    <div class="sectionhead reveal">
+      <div class="kick">The economics</div>
+      <h2>Tokenomics &mdash; scale the output, not the spend</h2>
+      <p>Running one SE at full throttle this year took <b>2+ billion tokens a month</b>. That number is not the cost of <i>operating</i> SE-OS &mdash; it's the cost of <i>discovering</i> it: one SE figuring out the patterns, skills, and plays from scratch. The whole design question is how every SE inherits that output <b>without re-paying the discovery bill.</b></p>
+    </div>
+
+    <div class="loop reveal">
+      <div class="node">Discovery<small>1 SE &middot; ~2B tok/mo</small></div>
+      <span class="arr">&rarr;</span>
+      <div class="node">Harvest<small>skills &middot; patterns &middot; templates</small></div>
+      <span class="arr">&rarr;</span>
+      <div class="node">Distribution<small>every SE inherits the library</small></div>
+      <span class="arr">&rarr;</span>
+      <div class="node">Marginal cost<small>drops toward zero per SE</small></div>
+    </div>
+    <p style="text-align:center;font-size:0.86rem;color:var(--cp-text-soft);margin:14px auto 0;max-width:760px">The expensive part is paid <b>once</b>. The durable asset is the <b>skill</b>, not the conversation that produced it &mdash; so the next SE starts from the artifact, not the blank page.</p>
+
+    <div class="sectionhead reveal" style="margin-top:44px">
+      <div class="kick">How we hold the line</div>
+      <h2 style="font-size:1.5rem">Six levers that decouple SE scale from token burn</h2>
+    </div>
+    <div class="visiongrid reveal">
+      <div class="vcard"><div class="vn">01</div><h4>Skills, not re-derivation</h4><p>The output of every engagement is harvested into reusable skills, templates, and patterns. Agents load the artifact instead of re-discovering context every run &mdash; the single biggest spend killer.</p></div>
+      <div class="vcard"><div class="vn">02</div><h4>Right model for the job</h4><p>A cost ladder, not one big model for everything. Small models (e.g. Phi-4-mini) handle transcript parsing at <b>~15&ndash;20&times; lower cost</b>; escalate to frontier models only for the hardest reasoning.</p></div>
+      <div class="vcard"><div class="vn">03</div><h4>Curated memory + a promotion gate</h4><p>An operational store remembers facts; only durable <i>meaning</i> is promoted to account narrative. Agents stop re-ingesting the same context &mdash; memory replaces repetition.</p></div>
+      <div class="vcard"><div class="vn">04</div><h4>Deterministic where possible</h4><p>Contracts, indexers, templates, and rules-based fallbacks do real work with <b>zero tokens</b>. The model is reserved for judgment, not plumbing the pipeline can do for free.</p></div>
+      <div class="vcard"><div class="vn">05</div><h4>Estimate before you spend</h4><p>A callable Tokenomics estimator surfaces the credit/token cost of a build <i>at the moment you choose it</i> &mdash; Neptune-aligned, so the spend is a decision, not a surprise.</p></div>
+      <div class="vcard"><div class="vn">06</div><h4>One deploy, many SEs</h4><p>The discovery cost is amortized across the whole practice. Every SE who onboards consumes the shared library &mdash; the more SEs join, the cheaper each one's path to scale.</p></div>
+    </div>
+
+    <div class="reveal" style="margin-top:36px">
+      <table class="outcometable">
+        <thead><tr><th>Task</th><th>Default model</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Transcript &rarr; structured outcomes</td><td><b>Phi-4-mini</b></td><td>~15&ndash;20&times; cheaper; high quality on conversation</td></tr>
+          <tr><td>Complex reasoning / architecture</td><td>Phi-4 / GPT-4o-mini</td><td>escalate only when the small model strains</td></tr>
+          <tr><td>Hardest, highest-stakes builds</td><td>Frontier (GPT-4o)</td><td>fallback for the rare case that needs it</td></tr>
+          <tr><td>Indexing, contracts, dedupe, templates</td><td><b>None (deterministic)</b></td><td>code does it &mdash; no tokens at all</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.82rem;color:var(--cp-text-soft);margin-top:10px">The ladder auto-selects: cheapest capable path first, escalate on demand, fall back to rules if the model is unavailable &mdash; so work never fails and rarely overspends.</p>
+    </div>
+
+    <div class="unlock reveal" style="margin-top:30px;text-align:left">
+      <b>The tokenomics thesis:</b> the 2B-token number is a <i>one-time discovery investment</i>, not a per-SE operating cost. SE-OS turns that spend into a durable, distributable library &mdash; so the practice scales the <b>output</b> (every SE operating at full scale) while the <b>spend per SE</b> trends toward the cost of loading an artifact. Pay it once, distribute the result.
+    </div>
+  </div>
+</section>
+
+<section id="impact" class="alt">
   <div class="wrap">
     <div class="sectionhead reveal">
       <div class="kick">Impact</div>
@@ -419,7 +471,7 @@ footer .fbrand { font-weight: 700; color: var(--cp-text); }
   </div>
 </section>
 
-<section id="roadmap" class="alt">
+<section id="roadmap">
   <div class="wrap">
     <div class="sectionhead reveal">
       <div class="kick">Vision &amp; roadmap</div>
