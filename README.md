@@ -2,9 +2,9 @@
 
 <div align="center">
 
-![Microsoft Logo](https://img.shields.io/badge/Microsoft-Discrete%20Manufacturing%20CoE-0078D4?style=for-the-badge&logo=microsoft)
+![Microsoft Logo](https://img.shields.io/badge/Microsoft-MCAPS%20OS-0078D4?style=for-the-badge&logo=microsoft)
 
-## The Solution Engineer's Operating System
+## MCAPS OS — one operating system, every persona
 
 *A digital SE team that builds, an outcome-first pipeline that governs, and the window that drives it.*
 
