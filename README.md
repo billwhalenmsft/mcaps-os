@@ -1,93 +1,74 @@
-# SE-OS Overview Site
+# MCAPS OS — Overview Site
 
 <div align="center">
 
-![Microsoft Logo](https://img.shields.io/badge/Microsoft-MCAPS%20OS-0078D4?style=for-the-badge&logo=microsoft)
+![Microsoft](https://img.shields.io/badge/Microsoft-MCAPS%20OS-0078D4?style=for-the-badge&logo=microsoft)
 
 ## MCAPS OS — one operating system, every persona
 
-*A digital SE team that builds, an outcome-first pipeline that governs, and the window that drives it.*
+*A digital field team that builds, an outcome-first pipeline that governs, and the window that drives it.*
 
----
+**Live (Microsoft-internal preview):** https://billwhalenmsft.github.io/mcaps-os/
 
 </div>
 
-### 📖 What is SE-OS?
+---
 
-SE-OS is a comprehensive operating system for Solution Engineers in Discrete Manufacturing. It combines:
+### What is MCAPS OS?
 
-- **🤖 Autonomous agents** (25+ specialist personas) that work in partnership with you
-- **⚙️ A delivery spine** (9 stages) that governs workflow from opportunity through handoff
-- **🎯 An outcome-first pipeline** that tracks value realization in real time
-- **🪟 A digital interface** (Launcher → Command Center → Customer 360) that surfaces next-best-actions
+It started as **SE-OS** — one Solution Engineer's operating system. It's grown into **MCAPS OS**:
+the same core, activated for every persona in the MCAPS field motion. One app, one front door —
+seen through the lens of whoever you are.
+
+| Lens | Unit | Personas | Endpoint |
+|---|---|---|---|
+| **MCAPS OS** | the whole system | every persona | [`/`](https://billwhalenmsft.github.io/mcaps-os/) |
+| **ATU OS** | Account Team Unit | AE · ATS · ATM | [`/atu/`](https://billwhalenmsft.github.io/mcaps-os/atu/) |
+| **STU OS** | Specialist Team Unit *(most built-out)* | SSP · SE + managers | [`/stu/`](https://billwhalenmsft.github.io/mcaps-os/stu/) |
+| **CSU OS** | Customer Success Unit | CSAM · CSA | [`/csu/`](https://billwhalenmsft.github.io/mcaps-os/csu/) |
+
+Same core, four motions: ATU owns the account, STU proves the technical case, CSU makes the win real and grows it.
 
 ---
 
-### ✨ Key Capabilities
+### 🔒 Microsoft-internal soft gate
 
-| Capability | Purpose |
-|-----------|---------|
-| **Command Center** | See your book of work at a glance—opportunities, signals, assets, and team bandwidth in one view |
-| **Customer 360** | Drill into any account: relationship health, tech profile, engagement signals, and next action |
-| **Signal Lab** | Ingest customer interactions and automatically categorize them as opportunities or risks |
-| **Workshop** | Collaborate with agents to design solutions, capture requirements, and iterate on tech |
-| **Orchestration** | Sequence multi-stage engagements with automated handoffs and deal-team accountability |
+Every page is wrapped by `gate.js`, a **render-blocking Microsoft-internal interstitial**: the page
+will not paint until the visitor confirms a Microsoft identity (an `@microsoft.com` address), and the
+choice is remembered per browser.
 
----
-
-### 🚀 Live Demo
-
-**[View the full interactive overview →](https://billwhalenmsft.github.io/se-os-overview/)**
-
-Real screenshots from **v1.72.0** demo mode (internal-only; signed-in employees see live data):
-
-1. **The Launcher** — One front door to all modules
-2. **Command Center** — Your book of work, all accounts, priority signals
-3. **Customer 360** — Deep drill into relationship health and tech profile
-4. **Engagement Guide** — Plan, build, deliver—step by step
+> **This is a soft (display) gate, not a security boundary.** GitHub Pages is static hosting with no
+> server-side auth, so a determined external user can still read the raw HTML over the wire. The durable
+> **hard gate** is MSAL.js against a single-tenant (microsoft.com) Entra app registration, or moving the
+> content behind Azure Static Web Apps Standard. Tracked in the main repo backlog as
+> `mcapsos-identity-msal-corp-tenant`.
 
 ---
 
-### 📊 By the Numbers
-
-- **25+** specialist agents (developers, architects, SMEs, project managers)
-- **9** delivery stages (opportunity → technical close → adoption)
-- **10+** built engagements (proof of concept)
-- **∞** runs while you're in meetings
-
----
-
-### 📁 In This Repo
+### 📁 In this repo
 
 ```
-se-os-overview/
-├── index.html          Single self-contained page (53 KB, Clawpilot theme)
-├── img/                Screenshot assets
-│   ├── seos-launcher.png
-│   ├── seos-customer360.png
-│   └── walkthrough/     Step-by-step real app screenshots
-└── README.md           This file
+mcaps-os/
+├── index.html        MCAPS OS umbrella overview (Clawpilot theme, self-contained)
+├── gate.js           Microsoft-internal soft gate (loaded first in <head> on every page)
+├── lens.css          Shared theme + components for the unit sub-OS pages
+├── atu/index.html    ATU OS — Account Team Unit lens
+├── stu/index.html    STU OS — Specialist Team Unit lens (most built-out)
+├── csu/index.html    CSU OS — Customer Success Unit lens
+├── prototypes/       Embedded prototypes (mobile decision inbox)
+├── img/              Screenshot assets
+└── README.md         This file
 ```
 
-**Technology:** HTML5, CSS3 (light/dark theme with `prefers-color-scheme`), vanilla JS.
-
----
-
-### 🎨 Themes
-
-The site respects your system preference (light/dark) but includes a **toggle button** in the top-right corner to switch anytime.
+**Technology:** HTML5, CSS3 (light/dark via `prefers-color-scheme` + `?scoutTheme=`), vanilla JS. No build step.
 
 ---
 
 ### 🔗 Resources
 
-- **Live Site:** https://billwhalenmsft.github.io/se-os-overview/
-- **Main Repo:** [SE-OS (SE-OS github.com/billwhalenmsft/SE-OS)](https://github.com/billwhalenmsft/SE-OS)
-- **Deployment Repo:** This repo (`billwhalenmsft/se-os-overview`)
-- **Documentation:** See `/AGENTS.md` and `/SE-OS.md` in the main repo for deep-dive docs
+- **Live site:** https://billwhalenmsft.github.io/mcaps-os/ *(formerly `/se-os-overview/` — GitHub redirects renamed-repo Pages after propagation)*
+- **Main repo:** [billwhalenmsft/SE-OS](https://github.com/billwhalenmsft/SE-OS) — see `/AGENTS.md` for deep-dive docs
 
 ---
 
-### ❓ Questions?
-
-This is part of the **Microsoft Discrete Manufacturing Agentic Center of Excellence**. For details on building agents, using the signal pipeline, or onboarding your team, see the main SE-OS documentation.
+This is part of the **Microsoft Discrete Manufacturing Agentic Center of Excellence**.
