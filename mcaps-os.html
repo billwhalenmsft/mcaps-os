@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-<script src="gate.js"></script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MCAPS OS — the operating system for how we sell</title>
@@ -16,29 +15,29 @@
 <style>
   :root {
     color-scheme: light;
-    --cp-bg: #f7f4ef;
-    --cp-bg-elevated: #fcfbf8;
+    --cp-bg: #faf9f8;
+    --cp-bg-elevated: #ffffff;
     --cp-surface: #ffffff;
-    --cp-surface-soft: #f5f5f5;
-    --cp-border: #dedede;
-    --cp-border-strong: #919191;
-    --cp-text: #242424;
-    --cp-text-muted: #5c5c5c;
-    --cp-text-soft: #6f6f6f;
-    --cp-accent: #b11f4b;
-    --cp-accent-hover: #9a1a41;
-    --cp-accent-soft: rgba(177, 31, 75, 0.08);
+    --cp-surface-soft: #f3f2f1;
+    --cp-border: #e1dfdd;
+    --cp-border-strong: #c8c6c4;
+    --cp-text: #201f1e;
+    --cp-text-muted: #605e5c;
+    --cp-text-soft: #797775;
+    --cp-accent: #0078d4;
+    --cp-accent-hover: #106ebe;
+    --cp-accent-soft: rgba(0, 120, 212, 0.08);
     --cp-accent-fg: #ffffff;
-    --cp-success: #16a34a;
-    --cp-danger: #dc2626;
-    --cp-warning: #f59e0b;
-    --cp-link: #0078d4;
+    --cp-success: #107c10;
+    --cp-danger: #d13438;
+    --cp-warning: #f7a800;
+    --cp-link: #0067b8;
     --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
     --cp-overlay: rgba(255, 255, 255, 0.8);
     --cp-panel: rgba(255, 255, 255, 0.86);
     --cp-panel-strong: rgba(255, 255, 255, 0.96);
     --cp-sheen: rgba(255, 255, 255, 0.55);
-    --cp-highlight: rgba(177, 31, 75, 0.12);
+    --cp-highlight: rgba(0, 120, 212, 0.12);
   }
   html[data-theme="dark"] {
     color-scheme: dark;
@@ -51,20 +50,20 @@
     --cp-text: #dedede;
     --cp-text-muted: #919191;
     --cp-text-soft: #b0b0b0;
-    --cp-accent: #fd8ea1;
-    --cp-accent-hover: #fb7b91;
-    --cp-accent-soft: rgba(253, 142, 161, 0.14);
+    --cp-accent: #50b0ff;
+    --cp-accent-hover: #6cbcff;
+    --cp-accent-soft: rgba(80, 176, 255, 0.14);
     --cp-accent-fg: #1a1a1a;
     --cp-success: #4ade80;
     --cp-danger: #f87171;
     --cp-warning: #fbbf24;
-    --cp-link: #4da6ff;
+    --cp-link: #6cb8f6;
     --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
     --cp-overlay: rgba(41, 41, 41, 0.88);
     --cp-panel: rgba(41, 41, 41, 0.72);
     --cp-panel-strong: rgba(41, 41, 41, 0.96);
     --cp-sheen: rgba(255, 255, 255, 0.04);
-    --cp-highlight: rgba(253, 142, 161, 0.12);
+    --cp-highlight: rgba(80, 176, 255, 0.12);
   }
 
   * { box-sizing: border-box; }
@@ -211,6 +210,8 @@
   .stat .lbl { font-size: 0.8rem; color: var(--cp-text-muted); margin-top: 6px; }
 
   footer { padding: 40px 0 60px; color: var(--cp-text-soft); font-size: 0.82rem; }
+  footer a { color: var(--cp-link); text-decoration: none; font-weight: 600; }
+  footer a:hover { text-decoration: underline; }
   hr.sep { border: 0; border-top: 1px solid var(--cp-border); margin: 8px 0; }
   .arrowchain { font-size: 0.92rem; color: var(--cp-text-muted); }
   .arrowchain b { color: var(--cp-text); }
@@ -237,7 +238,7 @@
 
 <header class="hero">
   <div class="wrap">
-    <span class="eyebrow">Vision · Recipe 3 · for Microsoft MCAPS</span>
+    <span class="eyebrow">User / Builder View · Recipe 3 · for Microsoft MCAPS</span>
     <h1>The operating system for <span class="accent">how we sell.</span></h1>
     <p class="tagline">MCAPS&nbsp;OS <b>wraps around every persona</b> in our business — ATU, STU, CSU — knows who they are and what they're aligned to, and <b>curates the experience</b> for the job they're doing, across the whole customer lifecycle.</p>
     <div class="pillrow">
@@ -349,7 +350,7 @@
       <div class="phase">
         <div class="ph-h"><span class="n">Know</span><span class="arrow">we know them, every level →</span></div>
         <div class="shots">
-          <span class="shot"><span class="star">★</span> Account Agent <span class="shipped">SHIPPED</span></span>
+          <span class="shot"><span class="star">★</span> Account Agent</span>
           <span class="shot"><span class="star">★</span> Persona‑Ladder (C‑suite → coder)</span>
         </div>
       </div>
@@ -357,7 +358,6 @@
         <div class="ph-h"><span class="n">Build</span><span class="arrow">"they said it" → "it's built" →</span></div>
         <div class="shots">
           <span class="shot"><span class="star">★</span> Demo Precognition</span>
-          <span class="shot">Select‑and‑Go Demos <span class="shipped">SHIPPED</span></span>
           <span class="shot">Overnight Builder</span>
         </div>
       </div>
@@ -365,7 +365,7 @@
         <div class="ph-h"><span class="n">Tell</span><span class="arrow">never leave value on the table →</span></div>
         <div class="shots">
           <span class="shot">In‑Meeting Whisper</span>
-          <span class="shot">Instant Tokenomics <span class="shipped">SHIPPED</span></span>
+          <span class="shot">Instant Tokenomics <span class="muted" style="font-size:0.66rem;font-weight:800">NEXT</span></span>
         </div>
       </div>
       <div class="phase">
@@ -414,14 +414,6 @@
         <div class="what">First agent shipped</div>
         <div class="have"><b>Meeting Miner</b> mines new opportunities from existing meeting intelligence and stages them in CRM, approval‑gated. Tested on Pentair.<span class="tag done">SHIPPED</span></div>
       </div>
-      <div class="ev">
-        <div class="what">A real book, harvested</div>
-        <div class="have">A <b>live book of business</b> from MSX (every deal + stakeholder), and <b>proven solutions harvested</b> into reusable patterns — each with its platform choice, the full‑license alternatives, and the components that made it land.<span class="tag done">SHIPPED</span></div>
-      </div>
-      <div class="ev">
-        <div class="what">Composable demos</div>
-        <div class="have">The <b>Demo Composition Model</b> — proven demos broken into composable parts by domain (Customer Service, Field Service). Select the parts → the engine hydrates consistent data + tailors the script → <b>demo ready day one</b>. The component library (Service Toolkit, Customer 360) is the most‑reused core.<span class="tag done">SHIPPED</span></div>
-      </div>
     </div>
     <div class="callout" style="margin-top:8px">
       <p>The one honest gap: a <span class="mono">persona</span> profile + the routing that binds role → agents → MCEM → curated surfaces. <b>That's the next build — and it's on top of everything above.</b></p>
@@ -466,7 +458,7 @@
       <div class="card"><span class="ico">📈</span><h3>Compounding</h3><p>Every persona, engagement, reuse, and feedback loop makes it more valuable. A growing, defensible asset.</p></div>
     </div>
     <div class="callout" style="margin-top:22px">
-      <p class="q">"I have the chance to create my own job at Microsoft — and it involves building this system to revolutionize how we sell."</p>
+      <p class="q">"Put the whole field motion on one persona‑aware operating system — and change how we sell."</p>
       <p class="muted" style="margin-top:8px">MCAPS OS is that system. Recipe 3 — the persona‑wrapping motion — led with Jenna Donnahue. The vision is written, the engine is shipping, and the first agent is live.</p>
     </div>
   </div>
@@ -476,7 +468,8 @@
   <div class="wrap">
     <hr class="sep" />
     <p><b>MCAPS OS</b> — persona‑wrapped operating system for how we sell · Recipe 3 · internal vision artifact.<br/>
-    Canon: <span class="mono">docs/se-os/MCAPS-OS-VISION.md</span> · <span class="mono">docs/se-os/MOONSHOTS.md</span> · <span class="mono">docs/se-os/RELEASE-PLAN.md</span>. Built for Bill Whalen. Theme: Clawpilot.</p>
+    Three views, one vision: <a href="index.html">System View</a> (the whole machine) · <a href="mcaps-os-exec.html">Exec View</a> (meet your agent team) · <b>User / Builder View</b> (you're here).<br/>
+    Canon: <span class="mono">docs/se-os/MCAPS-OS-VISION.md</span> · <span class="mono">docs/se-os/MOONSHOTS.md</span> · <span class="mono">docs/se-os/RELEASE-PLAN.md</span>. Built for Bill Whalen. Theme: Microsoft Fluent.</p>
   </div>
 </footer>
 
