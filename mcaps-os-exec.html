@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<script src="gate.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MCAPS OS — meet your agent team</title>
+<script>
+  (() => {
+    const param = new URLSearchParams(window.location.search).get("scoutTheme");
+    const theme =
+      param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<style>
+  :root {
+    color-scheme: light;
+    --cp-bg: #f7f4ef;
+    --cp-bg-elevated: #fcfbf8;
+    --cp-surface: #ffffff;
+    --cp-surface-soft: #f5f5f5;
+    --cp-border: #dedede;
+    --cp-border-strong: #919191;
+    --cp-text: #242424;
+    --cp-text-muted: #5c5c5c;
+    --cp-text-soft: #6f6f6f;
+    --cp-accent: #b11f4b;
+    --cp-accent-hover: #9a1a41;
+    --cp-accent-soft: rgba(177, 31, 75, 0.08);
+    --cp-accent-fg: #ffffff;
+    --cp-success: #16a34a;
+    --cp-danger: #dc2626;
+    --cp-warning: #f59e0b;
+    --cp-link: #0078d4;
+    --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+    --cp-overlay: rgba(255, 255, 255, 0.8);
+    --cp-panel: rgba(255, 255, 255, 0.86);
+    --cp-panel-strong: rgba(255, 255, 255, 0.96);
+    --cp-sheen: rgba(255, 255, 255, 0.55);
+    --cp-highlight: rgba(177, 31, 75, 0.12);
+  }
+  html[data-theme="dark"] {
+    color-scheme: dark;
+    --cp-bg: #3d3b3a;
+    --cp-bg-elevated: #343231;
+    --cp-surface: #292929;
+    --cp-surface-soft: #2e2e2e;
+    --cp-border: #474747;
+    --cp-border-strong: #5f5f5f;
+    --cp-text: #dedede;
+    --cp-text-muted: #919191;
+    --cp-text-soft: #b0b0b0;
+    --cp-accent: #fd8ea1;
+    --cp-accent-hover: #fb7b91;
+    --cp-accent-soft: rgba(253, 142, 161, 0.14);
+    --cp-accent-fg: #1a1a1a;
+    --cp-success: #4ade80;
+    --cp-danger: #f87171;
+    --cp-warning: #fbbf24;
+    --cp-link: #4da6ff;
+    --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+    --cp-overlay: rgba(41, 41, 41, 0.88);
+    --cp-panel: rgba(41, 41, 41, 0.72);
+    --cp-panel-strong: rgba(41, 41, 41, 0.96);
+    --cp-sheen: rgba(255, 255, 255, 0.04);
+    --cp-highlight: rgba(253, 142, 161, 0.12);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-snap-type: y proximity; }
+  body {
+    margin: 0;
+    background: var(--cp-bg);
+    color: var(--cp-text);
+    font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── stage / flow ── */
+  .stage {
+    min-height: 100vh;
+    scroll-snap-align: start;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 72px 24px;
+    position: relative;
+    text-align: center;
+  }
+  .inner { width: 100%; max-width: 920px; margin: 0 auto; }
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  .kicker {
+    font-size: 0.74rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--cp-accent); margin-bottom: 20px;
+  }
+  h1 { font-size: clamp(2.1rem, 5.4vw, 4rem); line-height: 1.04; letter-spacing: -0.03em; margin: 0 0 22px; font-weight: 850; }
+  h2 { font-size: clamp(1.7rem, 4vw, 2.9rem); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 18px; font-weight: 820; }
+  .big { font-size: clamp(1.5rem, 3.4vw, 2.4rem); font-weight: 750; line-height: 1.18; letter-spacing: -0.01em; }
+  .sub { font-size: clamp(1.05rem, 2vw, 1.35rem); color: var(--cp-text-muted); max-width: 60ch; margin: 0 auto; }
+  .accent { color: var(--cp-accent); }
+  em { font-style: normal; color: var(--cp-accent); }
+
+  /* ── keep going ── */
+  .keepgoing {
+    position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+    z-index: 40; display: inline-flex; align-items: center; gap: 9px;
+    background: var(--cp-accent); color: var(--cp-accent-fg);
+    border: 0; border-radius: 999px; padding: 12px 22px;
+    font-family: inherit; font-size: 0.92rem; font-weight: 750; cursor: pointer;
+    box-shadow: var(--cp-shadow); transition: transform .15s ease, background .15s ease, opacity .3s ease;
+  }
+  .keepgoing:hover { background: var(--cp-accent-hover); transform: translateX(-50%) translateY(-2px); }
+  .keepgoing .arrow { animation: bob 1.6s ease-in-out infinite; }
+  @keyframes bob { 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(4px);} }
+
+  /* ── progress rail ── */
+  .rail { position: fixed; right: 22px; top: 50%; transform: translateY(-50%); z-index: 40; display: flex; flex-direction: column; gap: 11px; }
+  .rail button {
+    width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--cp-border-strong);
+    background: transparent; padding: 0; cursor: pointer; transition: all .2s ease;
+  }
+  .rail button.active { background: var(--cp-accent); border-color: var(--cp-accent); transform: scale(1.25); }
+  @media (max-width: 680px){ .rail { display: none; } }
+
+  /* ── brand chip top ── */
+  .topbrand {
+    position: fixed; left: 22px; top: 18px; z-index: 40;
+    display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 0.9rem;
+  }
+  .topbrand .mark {
+    width: 26px; height: 26px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--cp-accent), var(--cp-accent-hover));
+    display: grid; place-items: center; color: var(--cp-accent-fg); font-weight: 900; font-size: 0.85rem;
+  }
+
+  /* ── mind card (Chamber feel) ── */
+  .minds { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 28px; }
+  @media (max-width: 860px){ .minds { grid-template-columns: repeat(2,1fr);} }
+  @media (max-width: 460px){ .minds { grid-template-columns: 1fr;} }
+  .mind {
+    background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 16px;
+    padding: 18px 16px; text-align: left; box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
+    display: flex; flex-direction: column; gap: 9px;
+  }
+  .mind .av {
+    width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center;
+    font-size: 1.4rem; background: var(--cp-accent-soft); border: 1px solid var(--cp-border);
+  }
+  .mind .nm { font-weight: 800; font-size: 1.05rem; letter-spacing: -0.01em; }
+  .mind .role { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--cp-accent); }
+  .mind .job { font-size: 0.86rem; color: var(--cp-text-muted); line-height: 1.4; }
+
+  /* ── persistent customer centerpiece ── */
+  .orbit { position: relative; width: min(540px, 92vw); height: min(540px, 92vw); margin: 18px auto 0; }
+  .core {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+    width: min(230px, 56vw); border-radius: 22px; padding: 22px 20px;
+    background: var(--cp-surface); border: 2px solid var(--cp-accent);
+    box-shadow: var(--cp-shadow); text-align: center; z-index: 2;
+  }
+  .core .av { font-size: 2.4rem; }
+  .core .nm { font-weight: 850; font-size: 1.15rem; margin-top: 6px; }
+  .core .tag { font-size: 0.74rem; color: var(--cp-text-muted); margin-top: 4px; }
+  .core .persist { margin-top: 10px; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--cp-success); }
+  .satellite {
+    position: absolute; left: 50%; top: 50%;
+    width: 78px; height: 78px; margin: -39px 0 0 -39px; border-radius: 50%;
+    background: var(--cp-bg-elevated); border: 1px dashed var(--cp-border-strong);
+    display: grid; place-items: center; text-align: center; z-index: 1;
+    font-size: 0.66rem; font-weight: 800; color: var(--cp-text-muted); letter-spacing: 0.04em;
+  }
+  .orbit .caption { position: absolute; left: 0; right: 0; bottom: -6px; font-size: 0.9rem; color: var(--cp-text-muted); }
+
+  /* ── proof chips ── */
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 26px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px; font-size: 0.88rem; font-weight: 650;
+    padding: 9px 15px; border-radius: 999px; background: var(--cp-surface); border: 1px solid var(--cp-border); color: var(--cp-text);
+  }
+  .chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cp-success); }
+
+  .cta {
+    display: inline-flex; align-items: center; gap: 10px; margin-top: 26px;
+    background: var(--cp-accent); color: var(--cp-accent-fg); border-radius: 14px;
+    padding: 15px 26px; font-size: 1.05rem; font-weight: 800;
+  }
+  .foot { margin-top: 30px; font-size: 0.78rem; color: var(--cp-text-soft); max-width: 64ch; }
+  .foot a { color: var(--cp-link); text-decoration: none; }
+
+  .quote { font-size: clamp(1.2rem, 2.6vw, 1.8rem); font-weight: 700; line-height: 1.35; max-width: 24ch; margin: 0 auto; }
+  .handoff { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; margin-top: 24px; font-weight: 800; color: var(--cp-text-muted); }
+  .handoff span.role { color: var(--cp-accent); }
+  .handoff .arr { color: var(--cp-text-soft); }
+</style>
+</head>
+<body>
+
+<div class="topbrand"><span class="mark">M</span><span>MCAPS&nbsp;OS</span></div>
+<div class="rail" id="rail"></div>
+
+<!-- 0 · HOOK -->
+<section class="stage" id="s0">
+  <div class="inner">
+    <div class="kicker reveal">For Jenna · the 30-second version</div>
+    <h1 class="reveal">What if you never lost a customer<br/>relationship again —</h1>
+    <p class="big reveal">even when the entire account team changes?</p>
+  </div>
+</section>
+
+<!-- 1 · THE PROBLEM -->
+<section class="stage" id="s1">
+  <div class="inner">
+    <div class="kicker reveal">Today</div>
+    <h2 class="reveal">When an AE moves on,<br/>the customer starts over.</h2>
+    <p class="sub reveal">The context walks out the door. Every transition, we lose the rhythm,
+    the history, the trust we spent years building. We rebuild the relationship from memory.</p>
+  </div>
+</section>
+
+<!-- 2 · HERO — customer as a persistent agent -->
+<section class="stage" id="s2">
+  <div class="inner">
+    <div class="kicker reveal">The idea</div>
+    <h2 class="reveal">What if every customer<br/>was <em>an agent?</em></h2>
+    <div class="orbit reveal" id="orbit">
+      <div class="core">
+        <div class="av">💧</div>
+        <div class="nm">Pentair</div>
+        <div class="tag">every renewal · every SKU · every meeting · every transcript</div>
+        <div class="persist">● stays intact</div>
+      </div>
+      <!-- satellites positioned by JS -->
+    </div>
+    <p class="sub reveal" style="margin-top:30px">The account team rotates around it. The rhythm with the
+    customer <strong>does not.</strong> It belongs to the customer agent — and it stays.</p>
+  </div>
+</section>
+
+<!-- 3 · the role personas -->
+<section class="stage" id="s3">
+  <div class="inner">
+    <div class="kicker reveal">And it's not just one agent</div>
+    <h2 class="reveal">Every role gets its own.</h2>
+    <p class="sub reveal">Just like you have <strong>Trixie</strong> for travel and <strong>Pulse</strong> for signals —
+    every seat at the table gets a named, purpose-built agent. This is your field, as a team of agents.</p>
+    <div class="minds reveal">
+      <div class="mind"><div class="av">🧭</div><div class="role">Account Exec</div><div class="nm">Compass</div><div class="job">Owns the relationship + the account strategy. Knows the why-now and who to call.</div></div>
+      <div class="mind"><div class="av">🔍</div><div class="role">Account Tech Strategist</div><div class="nm">Lens</div><div class="job">Reads the technical landscape and the play. Sees what the customer is ready for.</div></div>
+      <div class="mind"><div class="av">🎯</div><div class="role">Specialist</div><div class="nm">Vector</div><div class="job">Drives the solution to a close. Carries the commercial case.</div></div>
+      <div class="mind"><div class="av">🛠️</div><div class="role">Solution Engineer</div><div class="nm">Sol</div><div class="job">Designs, proves, and builds the demo — tailored to the customer, not a template.</div></div>
+      <div class="mind"><div class="av">⚓</div><div class="role">Cloud Solution Architect</div><div class="nm">Anchor</div><div class="job">Makes adoption stick. Turns the win into real, consumed value.</div></div>
+      <div class="mind"><div class="av">📈</div><div class="role">Customer Success (CSAM)</div><div class="nm">Cadence</div><div class="job">Keeps the value rhythm and finds the expansion. Never lets it go quiet.</div></div>
+      <div class="mind"><div class="av">🛰️</div><div class="role">Manager</div><div class="nm">Vista</div><div class="job">Sees across the whole team's accounts. Where to lean in, what needs them.</div></div>
+      <div class="mind" style="border-style:dashed"><div class="av">＋</div><div class="role">…and the role each evolves into</div><div class="nm">Your call</div><div class="job">We design the agent for the role each function becomes in an AI-first world.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · they work together -->
+<section class="stage" id="s4">
+  <div class="inner">
+    <div class="kicker reveal">The part that actually wins deals</div>
+    <h2 class="reveal">They hand off to each other —<br/>around the customer agent.</h2>
+    <p class="sub reveal">The way your best teams already do. Presales to Final Mile. Nothing drops at the seams,
+    because everything they know lives with the customer — not in someone's inbox.</p>
+    <div class="handoff reveal">
+      <span class="role">Compass</span><span class="arr">→</span>
+      <span class="role">Lens</span><span class="arr">→</span>
+      <span class="role">Vector</span><span class="arr">→</span>
+      <span class="role">Sol</span><span class="arr">→</span>
+      <span class="role">Anchor</span><span class="arr">→</span>
+      <span class="role">Cadence</span>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · you inherit it -->
+<section class="stage" id="s5">
+  <div class="inner">
+    <div class="kicker reveal">For everyone in the field</div>
+    <h2 class="reveal">A new hire doesn't<br/>assemble their tools.</h2>
+    <p class="sub reveal">They <strong>inherit</strong> a pre-composed agent team on day one — already tuned to their role,
+    their craft standards, their customers. And every engagement they run <em>harvests back</em> into a
+    shared library of proven plays and reusable parts, so the next person starts further ahead.
+    <strong>The system gets smarter with every deal.</strong></p>
+  </div>
+</section>
+
+<!-- 5b · select-and-go demos (the keystone — most tangible proof) -->
+<section class="stage" id="s5b">
+  <div class="inner">
+    <div class="kicker reveal">What that unlocks, concretely</div>
+    <h2 class="reveal">A tailored demo in a day —<br/><em>select, and go.</em></h2>
+    <p class="sub reveal">Our best SEs build the same proven demos on the same products, over and over.
+    So we broke them into <strong>composable parts.</strong> Pick the domain. Tick the pieces. The engine
+    hydrates a complete, consistent data set for the customer and tailors the script to them.
+    <strong>Demo ready day one</strong> — then you practice and refine, instead of rebuild.</p>
+    <div class="chips reveal">
+      <span class="chip"><span class="dot"></span>Pick a domain — Customer&nbsp;Service, Field&nbsp;Service…</span>
+      <span class="chip"><span class="dot"></span>Tick the parts — Customer&nbsp;360, Service&nbsp;Toolkit, the&nbsp;agent</span>
+      <span class="chip"><span class="dot"></span>Engine hydrates the data + tailors the script</span>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · it's real -->
+<section class="stage" id="s6">
+  <div class="inner">
+    <div class="kicker reveal">This isn't a concept deck</div>
+    <h2 class="reveal">The engine is already running.</h2>
+    <p class="sub reveal">We're building MCAPS OS now — on the platforms the field already lives in,
+    grounded in a real book of business, not a mock-up.</p>
+    <div class="chips reveal">
+      <span class="chip"><span class="dot"></span>A real, live book — from MSX, every deal &amp; stakeholder</span>
+      <span class="chip"><span class="dot"></span>Proven solutions harvested into reusable plays</span>
+      <span class="chip"><span class="dot"></span>A component library — the parts that make a demo land</span>
+      <span class="chip"><span class="dot"></span>Meeting&nbsp;Miner — turns every meeting into pipeline</span>
+      <span class="chip"><span class="dot"></span>The&nbsp;Account&nbsp;agent — knows the customer, builds for it</span>
+      <span class="chip"><span class="dot"></span>Instant&nbsp;ROI — the cost &amp; value, in the room</span>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · close -->
+<section class="stage" id="s7">
+  <div class="inner">
+    <div class="kicker reveal">MCAPS OS</div>
+    <h2 class="reveal">The operating system<br/>for how we sell.</h2>
+    <p class="quote reveal" style="margin-top:8px">Built on MCAPS&nbsp;IQ. Activated at every persona.</p>
+    <div class="cta reveal">Ready to create history? →</div>
+    <p class="foot reveal">Illustrative agent names (Compass, Lens, Vector, Sol, Anchor, Cadence, Vista) show the
+    pattern — named, purpose-built agents per role, the way you use Trixie and Pulse. The deeper architecture
+    (the builder's lens) lives in <a href="mcaps-os.html">mcaps-os.html</a>.</p>
+  </div>
+</section>
+
+<button class="keepgoing" id="keepgoing">Keep going <span class="arrow">↓</span></button>
+
+<script>
+  const stages = Array.from(document.querySelectorAll('.stage'));
+  let idx = 0;
+
+  // build progress rail
+  const rail = document.getElementById('rail');
+  stages.forEach((s, i) => {
+    const b = document.createElement('button');
+    b.setAttribute('aria-label', 'Go to section ' + (i + 1));
+    b.addEventListener('click', () => scrollTo(i));
+    rail.appendChild(b);
+  });
+  const dots = Array.from(rail.children);
+
+  function scrollTo(i) {
+    idx = Math.max(0, Math.min(stages.length - 1, i));
+    stages[idx].scrollIntoView({ behavior: 'smooth' });
+  }
+  function next() { scrollTo(idx + 1); }
+  function prev() { scrollTo(idx - 1); }
+
+  document.getElementById('keepgoing').addEventListener('click', next);
+
+  document.addEventListener('keydown', (e) => {
+    if (['ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); next(); }
+    else if (['ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); prev(); }
+  });
+
+  // active section tracking + reveal on enter
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (en.isIntersecting) {
+        const i = stages.indexOf(en.target);
+        idx = i;
+        dots.forEach((d, di) => d.classList.toggle('active', di === i));
+        en.target.querySelectorAll('.reveal').forEach((el, k) => {
+          setTimeout(() => el.classList.add('in'), k * 110);
+        });
+        // hide keep-going on the last stage
+        document.getElementById('keepgoing').style.opacity = (i === stages.length - 1) ? '0' : '1';
+        document.getElementById('keepgoing').style.pointerEvents = (i === stages.length - 1) ? 'none' : 'auto';
+      }
+    });
+  }, { threshold: 0.55 });
+  stages.forEach((s) => io.observe(s));
+
+  // position the orbit satellites (decorative)
+  const orbit = document.getElementById('orbit');
+  if (orbit) {
+    const labels = ['AE', 'ATS', 'SE', 'CSA', 'CSAM'];
+    const R = 0.40; // fraction of orbit size
+    labels.forEach((lab, i) => {
+      const ang = (-90 + i * (360 / labels.length)) * Math.PI / 180;
+      const el = document.createElement('div');
+      el.className = 'satellite';
+      el.textContent = lab;
+      el.style.left = (50 + Math.cos(ang) * R * 100) + '%';
+      el.style.top = (50 + Math.sin(ang) * R * 100) + '%';
+      orbit.appendChild(el);
+    });
+    const cap = document.createElement('div');
+    cap.className = 'caption';
+    orbit.appendChild(cap);
+  }
+
+  // reveal the first stage immediately
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('#s0 .reveal').forEach((el, k) => setTimeout(() => el.classList.add('in'), 120 + k * 120));
+  });
+</script>
+</body>
+</html>

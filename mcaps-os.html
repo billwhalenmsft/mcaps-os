@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<script src="gate.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MCAPS OS — the operating system for how we sell</title>
+<script>
+  (() => {
+    const param = new URLSearchParams(window.location.search).get("scoutTheme");
+    const theme =
+      param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<style>
+  :root {
+    color-scheme: light;
+    --cp-bg: #f7f4ef;
+    --cp-bg-elevated: #fcfbf8;
+    --cp-surface: #ffffff;
+    --cp-surface-soft: #f5f5f5;
+    --cp-border: #dedede;
+    --cp-border-strong: #919191;
+    --cp-text: #242424;
+    --cp-text-muted: #5c5c5c;
+    --cp-text-soft: #6f6f6f;
+    --cp-accent: #b11f4b;
+    --cp-accent-hover: #9a1a41;
+    --cp-accent-soft: rgba(177, 31, 75, 0.08);
+    --cp-accent-fg: #ffffff;
+    --cp-success: #16a34a;
+    --cp-danger: #dc2626;
+    --cp-warning: #f59e0b;
+    --cp-link: #0078d4;
+    --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+    --cp-overlay: rgba(255, 255, 255, 0.8);
+    --cp-panel: rgba(255, 255, 255, 0.86);
+    --cp-panel-strong: rgba(255, 255, 255, 0.96);
+    --cp-sheen: rgba(255, 255, 255, 0.55);
+    --cp-highlight: rgba(177, 31, 75, 0.12);
+  }
+  html[data-theme="dark"] {
+    color-scheme: dark;
+    --cp-bg: #3d3b3a;
+    --cp-bg-elevated: #343231;
+    --cp-surface: #292929;
+    --cp-surface-soft: #2e2e2e;
+    --cp-border: #474747;
+    --cp-border-strong: #5f5f5f;
+    --cp-text: #dedede;
+    --cp-text-muted: #919191;
+    --cp-text-soft: #b0b0b0;
+    --cp-accent: #fd8ea1;
+    --cp-accent-hover: #fb7b91;
+    --cp-accent-soft: rgba(253, 142, 161, 0.14);
+    --cp-accent-fg: #1a1a1a;
+    --cp-success: #4ade80;
+    --cp-danger: #f87171;
+    --cp-warning: #fbbf24;
+    --cp-link: #4da6ff;
+    --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+    --cp-overlay: rgba(41, 41, 41, 0.88);
+    --cp-panel: rgba(41, 41, 41, 0.72);
+    --cp-panel-strong: rgba(41, 41, 41, 0.96);
+    --cp-sheen: rgba(255, 255, 255, 0.04);
+    --cp-highlight: rgba(253, 142, 161, 0.12);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--cp-bg);
+    color: var(--cp-text);
+    font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  code, .mono { font-family: Consolas, "Courier New", Courier, monospace; }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding: 12px 22px;
+    background: var(--cp-panel-strong);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--cp-border);
+  }
+  .brand { display: flex; align-items: center; gap: 11px; font-weight: 800; letter-spacing: -0.01em; }
+  .brand .mark {
+    width: 30px; height: 30px; border-radius: 9px;
+    background: linear-gradient(135deg, var(--cp-accent), var(--cp-accent-hover));
+    display: grid; place-items: center; color: var(--cp-accent-fg); font-size: 0.95rem; font-weight: 900;
+  }
+  .brand small { display:block; font-weight:600; font-size:0.66rem; color: var(--cp-text-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+  .topnav { display: flex; gap: 4px; flex-wrap: wrap; }
+  .topnav a {
+    color: var(--cp-text-muted); text-decoration: none; font-size: 0.82rem; font-weight: 600;
+    padding: 7px 11px; border-radius: 8px;
+  }
+  .topnav a:hover { color: var(--cp-text); background: var(--cp-accent-soft); }
+  @media (max-width: 860px) { .topnav { display: none; } }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 22px; }
+  section { padding: 64px 0 12px; }
+  .eyebrow {
+    display: inline-block; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--cp-accent); margin-bottom: 12px;
+  }
+  h1 { font-size: clamp(2.1rem, 5vw, 3.5rem); line-height: 1.05; letter-spacing: -0.03em; margin: 0 0 18px; font-weight: 850; }
+  h2 { font-size: clamp(1.5rem, 3vw, 2.1rem); letter-spacing: -0.02em; margin: 0 0 14px; font-weight: 800; }
+  h3 { font-size: 1.08rem; margin: 0 0 7px; font-weight: 750; }
+  p.lead { font-size: 1.18rem; color: var(--cp-text-muted); max-width: 64ch; }
+  .muted { color: var(--cp-text-muted); }
+  .accent { color: var(--cp-accent); }
+
+  .hero {
+    padding: 72px 0 40px;
+    background:
+      radial-gradient(1100px 380px at 18% -8%, var(--cp-highlight), transparent 60%),
+      radial-gradient(900px 320px at 92% 0%, var(--cp-accent-soft), transparent 55%);
+  }
+  .hero .tagline { font-size: clamp(1.15rem, 2.4vw, 1.5rem); font-weight: 600; color: var(--cp-text); max-width: 56ch; margin: 0 0 26px; }
+  .hero .tagline b { color: var(--cp-accent); }
+  .pillrow { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 10px; }
+  .pill {
+    font-size: 0.8rem; font-weight: 650; padding: 7px 13px; border-radius: 999px;
+    background: var(--cp-surface); border: 1px solid var(--cp-border); color: var(--cp-text-muted);
+  }
+  .pill.live { border-color: var(--cp-success); color: var(--cp-success); }
+  .pill .dot { display:inline-block; width:7px;height:7px;border-radius:50%; background: var(--cp-success); margin-right:6px; vertical-align: middle; }
+
+  .grid { display: grid; gap: 16px; }
+  .g2 { grid-template-columns: repeat(2, 1fr); }
+  .g3 { grid-template-columns: repeat(3, 1fr); }
+  .g4 { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 900px) { .g3, .g4 { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) { .g2, .g3, .g4 { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 16px;
+    padding: 20px; box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
+  }
+  .card.soft { background: var(--cp-bg-elevated); }
+  .card .ico { font-size: 1.5rem; margin-bottom: 8px; display:block; }
+  .card h3 { margin-bottom: 6px; }
+  .card p { margin: 0; font-size: 0.93rem; color: var(--cp-text-muted); }
+
+  .unit {
+    background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 16px;
+    padding: 22px; box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
+    border-top: 4px solid var(--cp-accent);
+  }
+  .unit .code { font-size: 0.74rem; font-weight: 800; letter-spacing: 0.08em; color: var(--cp-accent); }
+  .unit h3 { font-size: 1.18rem; margin: 4px 0 10px; }
+  .roles { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 12px; }
+  .role { font-size: 0.74rem; font-weight: 700; padding: 4px 9px; border-radius: 7px; background: var(--cp-accent-soft); color: var(--cp-accent); }
+  .role.mgr { background: var(--cp-surface-soft); color: var(--cp-text-muted); border: 1px dashed var(--cp-border-strong); }
+  .unit .job { font-size: 0.9rem; color: var(--cp-text-muted); margin: 0; }
+  .unit .mcem { margin-top: 12px; font-size: 0.76rem; color: var(--cp-text-soft); font-weight: 600; }
+
+  .modes { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+  @media (max-width: 820px){ .modes { grid-template-columns: repeat(2,1fr);} }
+  @media (max-width: 480px){ .modes { grid-template-columns: 1fr;} }
+  .mode { background: var(--cp-surface); border:1px solid var(--cp-border); border-radius: 14px; padding: 18px; }
+  .mode .ico { font-size: 1.6rem; }
+  .mode h3 { margin: 8px 0 4px; }
+  .mode p { font-size: 0.86rem; color: var(--cp-text-muted); margin: 0 0 8px; }
+  .mode .who { font-size: 0.72rem; color: var(--cp-accent); font-weight: 700; }
+
+  .flow { display: grid; gap: 14px; }
+  .phase { background: var(--cp-bg-elevated); border:1px solid var(--cp-border); border-radius: 14px; padding: 16px 18px; }
+  .phase .ph-h { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+  .phase .ph-h .n { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cp-accent); }
+  .phase .ph-h .arrow { font-size: 0.8rem; color: var(--cp-text-soft); margin-left: auto; font-style: italic; }
+  .shots { display: flex; flex-wrap: wrap; gap: 8px; }
+  .shot { font-size: 0.84rem; font-weight: 600; padding: 7px 11px; border-radius: 9px; background: var(--cp-surface); border:1px solid var(--cp-border); display:flex; align-items:center; gap:7px; }
+  .shot .star { color: var(--cp-accent); }
+  .shot .shipped { font-size: 0.66rem; font-weight: 800; color: var(--cp-success); border:1px solid var(--cp-success); border-radius: 6px; padding: 1px 5px; }
+
+  .evidence { display: grid; gap: 10px; }
+  .ev { display: grid; grid-template-columns: 150px 1fr; gap: 14px; align-items: start; padding: 12px 0; border-bottom: 1px solid var(--cp-border); }
+  @media (max-width: 620px){ .ev { grid-template-columns: 1fr; gap: 4px; } }
+  .ev .what { font-weight: 750; font-size: 0.92rem; }
+  .ev .have { font-size: 0.88rem; color: var(--cp-text-muted); }
+  .ev .have .mono { color: var(--cp-text); background: var(--cp-surface-soft); padding: 1px 6px; border-radius: 6px; font-size: 0.82rem; }
+  .ev .tag { font-size: 0.66rem; font-weight: 800; padding: 2px 7px; border-radius: 6px; margin-left: 6px; }
+  .ev .tag.done { color: var(--cp-success); border: 1px solid var(--cp-success); }
+  .ev .tag.exists { color: var(--cp-link); border: 1px solid var(--cp-link); }
+
+  .train { display: grid; gap: 8px; }
+  .rel { display: grid; grid-template-columns: 56px 1fr; gap: 14px; align-items: center; padding: 11px 14px; border-radius: 11px; border:1px solid var(--cp-border); background: var(--cp-surface); }
+  .rel .rid { font-weight: 850; color: var(--cp-accent); font-size: 0.95rem; }
+  .rel .rt { font-size: 0.9rem; }
+  .rel .rt b { font-weight: 750; }
+  .rel.arc { background: var(--cp-accent-soft); border-color: transparent; }
+  .arc-label { font-size: 0.74rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cp-text-soft); margin: 14px 0 6px; }
+
+  .callout {
+    border-left: 4px solid var(--cp-accent); background: var(--cp-accent-soft);
+    padding: 18px 22px; border-radius: 0 14px 14px 0; margin: 18px 0;
+  }
+  .callout p { margin: 0; font-size: 1.02rem; }
+  .callout .q { font-size: 1.18rem; font-weight: 700; line-height: 1.4; }
+
+  .bignum { font-size: 2.3rem; font-weight: 850; color: var(--cp-accent); line-height: 1; }
+  .statrow { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+  @media (max-width: 700px){ .statrow { grid-template-columns: repeat(2,1fr);} }
+  .stat { text-align: center; padding: 18px 12px; }
+  .stat .lbl { font-size: 0.8rem; color: var(--cp-text-muted); margin-top: 6px; }
+
+  footer { padding: 40px 0 60px; color: var(--cp-text-soft); font-size: 0.82rem; }
+  hr.sep { border: 0; border-top: 1px solid var(--cp-border); margin: 8px 0; }
+  .arrowchain { font-size: 0.92rem; color: var(--cp-text-muted); }
+  .arrowchain b { color: var(--cp-text); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="mark">M</span>
+    <span>MCAPS&nbsp;OS<small>persona-wrapped sell-motion OS</small></span>
+  </div>
+  <nav class="topnav">
+    <a href="#problem">Problem</a>
+    <a href="#vision">Vision</a>
+    <a href="#personas">Personas</a>
+    <a href="#modes">Experience</a>
+    <a href="#moonshots">Moonshots</a>
+    <a href="#today">Build today</a>
+    <a href="#train">Release train</a>
+    <a href="#job">The charter</a>
+  </nav>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Vision · Recipe 3 · for Microsoft MCAPS</span>
+    <h1>The operating system for <span class="accent">how we sell.</span></h1>
+    <p class="tagline">MCAPS&nbsp;OS <b>wraps around every persona</b> in our business — ATU, STU, CSU — knows who they are and what they're aligned to, and <b>curates the experience</b> for the job they're doing, across the whole customer lifecycle.</p>
+    <div class="pillrow">
+      <span class="pill live"><span class="dot"></span>Engine built &amp; shipping</span>
+      <span class="pill">Wraps ATU · STU · CSU</span>
+      <span class="pill">Grounded in today's stack</span>
+      <span class="pill">Proof account: Pentair</span>
+    </div>
+  </div>
+</header>
+
+<section id="problem">
+  <div class="wrap">
+    <span class="eyebrow">The problem — name it so we don't rebuild it</span>
+    <h2>Every persona translates their job into tool taxonomy.</h2>
+    <p class="lead">An AE, an SE, a CSAM each live in a sprawl — MSX/CRM, MCEM guidance, decks, demo envs, success plans, a dozen portals. They must translate <em>what they're trying to do</em> into <em>our tool menu</em>. And the value leaks at the seams between them.</p>
+    <div class="grid g3" style="margin-top:22px">
+      <div class="card soft"><span class="ico">🧩</span><h3>Tool sprawl</h3><p>Organized around tools, not the job. The human does the translating the system should do.</p></div>
+      <div class="card soft"><span class="ico">💧</span><h3>Deals leak at the seams</h3><p>ATU→STU (is it qualified + designed?) and STU→CSU (did the win deploy + consume?) are lossy email threads, not tracked events.</p></div>
+      <div class="card soft"><span class="ico">🔁</span><h3>Nothing compounds</h3><p>Every engagement is a one-off. The best seller's moves don't propagate. Customer signals evaporate after the meeting.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="vision">
+  <div class="wrap">
+    <span class="eyebrow">The vision</span>
+    <h2>The system holds the persona model — so the human just does the job.</h2>
+    <div class="callout">
+      <p class="q">MCAPS OS knows who you are, what you're aligned to, and what you're trying to do — and curates one coherent experience around it — for every persona on the deal team, across the whole MCEM lifecycle.</p>
+    </div>
+    <p class="lead">It inverts the sprawl: the right surfaces, the right intelligence, and the next‑best‑actions come <em>to</em> the persona. And the handoffs between personas become in‑product events on one shared spine — so nothing drops at the seams.</p>
+  </div>
+</section>
+
+<section id="personas">
+  <div class="wrap">
+    <span class="eyebrow">Who it wraps — the rooms of the house</span>
+    <h2>ATU, STU, CSU — every role, including the manager altitude.</h2>
+    <p class="muted" style="max-width:62ch">Managers don't work a single deal — they see the rollup across their team. MCAPS OS curates a <b>portfolio view</b> for them, not a deal view.</p>
+    <div class="grid g3" style="margin-top:20px">
+      <div class="unit">
+        <span class="code">ATU · ACCOUNT TEAM UNIT</span>
+        <h3>Own the relationship</h3>
+        <div class="roles">
+          <span class="role">AE</span><span class="role">ATS</span>
+          <span class="role mgr">ATM · manager</span>
+        </div>
+        <p class="job">Account strategy, orchestration, qualify &amp; prioritize. The why‑now and the who.</p>
+        <p class="mcem">MCEM · Listen &amp; Consult → Inspire &amp; Design</p>
+      </div>
+      <div class="unit">
+        <span class="code">STU · SPECIALIST TEAM UNIT</span>
+        <h3>Win the technical case</h3>
+        <div class="roles">
+          <span class="role">SSP</span><span class="role">SE</span>
+          <span class="role mgr">SSP Mgr</span><span class="role mgr">SE Mgr</span>
+        </div>
+        <p class="job">Discover, design, prove (demo/POC), close the solution. The technical‑commercial win.</p>
+        <p class="mcem">MCEM · Inspire &amp; Design → Empower &amp; Achieve</p>
+      </div>
+      <div class="unit">
+        <span class="code">CSU · CUSTOMER SUCCESS UNIT</span>
+        <h3>Drive adoption &amp; value</h3>
+        <div class="roles">
+          <span class="role">CSAM</span><span class="role">CSA</span>
+        </div>
+        <p class="job">Deploy, adopt, consume, expand. Make the win real and grow it.</p>
+        <p class="mcem">MCEM · Empower &amp; Achieve → Realize Value</p>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:22px">
+      <p><b>And one more ladder — inside the customer.</b> The customer's own org runs C‑suite → VP → architect → developer. MCAPS OS tells one solution at <em>every</em> level, each in their language. One thing you built, five tailored tellings.</p>
+    </div>
+  </div>
+</section>
+
+<section id="modes">
+  <div class="wrap">
+    <span class="eyebrow">What "curates the experience" looks like</span>
+    <h2>One front door. Four job‑modes. Persona‑tuned content.</h2>
+    <p class="muted" style="max-width:62ch">Same shell for everyone; the content of each mode is tuned to the role, alignment, and MCEM stage. The seller we build for today is one column of this — MCAPS OS fills in the rest of the team.</p>
+    <div class="modes" style="margin-top:20px">
+      <div class="mode"><span class="ico">🛰️</span><h3>Home / Monitor</h3><p>"What's happening + what needs me." Intent router on top, the live dashboard below.</p><span class="who">All roles · managers see the team rollup</span></div>
+      <div class="mode"><span class="ico">🔍</span><h3>Discover</h3><p>Understand the account, qualify, find the why‑now and the warm path.</p><span class="who">AE · ATS · SSP</span></div>
+      <div class="mode"><span class="ico">🛠️</span><h3>Compose</h3><p>Build the thing — agent, demo, POC — from a recipe, with cost baked in.</p><span class="who">SSP · SE</span></div>
+      <div class="mode"><span class="ico">📦</span><h3>Deliver</h3><p>Hand it to the customer: engagement pack, run‑of‑show, value &amp; renewal handoff.</p><span class="who">SE · CSAM</span></div>
+    </div>
+    <div class="card" style="margin-top:18px; border-left:4px solid var(--cp-accent)">
+      <h3>And it forms itself around <em>you</em> <span class="muted" style="font-weight:600">— the Adaptive Shell</span></h3>
+      <p>Beyond static role curation, the system watches which signals, agents, and actions drive <b>this individual's</b> best customer engagement — and reorganizes around them. The system gets more <em>yours</em> the more you use it.</p>
+    </div>
+  </div>
+</section>
+
+<section id="moonshots">
+  <div class="wrap">
+    <span class="eyebrow">The capability set — 11 agents, one machine</span>
+    <h2>Everything feeds the engine.</h2>
+    <p class="muted" style="max-width:66ch">We don't rebuild capture — we build <b>adapters</b> onto intelligence that already exists (Copilot for Sales, Teams recap), routed into <b>one engine</b>. New capabilities are sources into it or consumers of it — never islands. Along the sell motion:</p>
+    <div class="flow" style="margin-top:20px">
+      <div class="phase">
+        <div class="ph-h"><span class="n">Sense</span><span class="arrow">nothing is missed →</span></div>
+        <div class="shots">
+          <span class="shot"><span class="star">★</span> Meeting Miner <span class="shipped">SHIPPED</span></span>
+          <span class="shot">Ambient Account Radar</span>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="ph-h"><span class="n">Know</span><span class="arrow">we know them, every level →</span></div>
+        <div class="shots">
+          <span class="shot"><span class="star">★</span> Account Agent <span class="shipped">SHIPPED</span></span>
+          <span class="shot"><span class="star">★</span> Persona‑Ladder (C‑suite → coder)</span>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="ph-h"><span class="n">Build</span><span class="arrow">"they said it" → "it's built" →</span></div>
+        <div class="shots">
+          <span class="shot"><span class="star">★</span> Demo Precognition</span>
+          <span class="shot">Select‑and‑Go Demos <span class="shipped">SHIPPED</span></span>
+          <span class="shot">Overnight Builder</span>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="ph-h"><span class="n">Tell</span><span class="arrow">never leave value on the table →</span></div>
+        <div class="shots">
+          <span class="shot">In‑Meeting Whisper</span>
+          <span class="shot">Instant Tokenomics <span class="shipped">SHIPPED</span></span>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="ph-h"><span class="n">Compound</span><span class="arrow">every deal warmer, every week better →</span></div>
+        <div class="shots">
+          <span class="shot">Deal Sonar</span>
+          <span class="shot">Self‑Improving CoE</span>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="ph-h"><span class="n">Adaptive</span><span class="arrow">the system forms around each user</span></div>
+        <div class="shots">
+          <span class="shot"><span class="star">★</span> Adaptive Shell</span>
+        </div>
+      </div>
+    </div>
+    <p class="arrowchain" style="margin-top:18px">
+      <b>The chain that sells itself:</b> Meeting Miner catches the need → Account Agent remembers it → Demo Precognition builds it → Persona‑Ladder tells everyone → Tokenomics prices it → the flywheel improves the next one — and the Adaptive Shell forms it all around you.
+    </p>
+  </div>
+</section>
+
+<section id="today">
+  <div class="wrap">
+    <span class="eyebrow">How we build it today already</span>
+    <h2>This is assembly, not R&amp;D. The parts exist.</h2>
+    <p class="muted" style="max-width:64ch">The honest pitch: the brains, the data, the spine, the shell, and the engine are already here. The risk is assembly + adoption — not invention.</p>
+    <div class="evidence" style="margin-top:18px">
+      <div class="ev">
+        <div class="what">Persona brains</div>
+        <div class="have">Installed MCAPS‑IQ role agents map 1:1 — <span class="mono">role-ae</span>/<span class="mono">role-ats</span> (ATU), <span class="mono">role-specialist</span>/<span class="mono">role-se</span> (STU), <span class="mono">role-csa</span>/<span class="mono">role-csam</span> (CSU), plus <span class="mono">mcem-flow</span>.<span class="tag exists">EXISTS</span></div>
+      </div>
+      <div class="ev">
+        <div class="what">Data spine</div>
+        <div class="have">Live MSX/CRM (opportunities, milestones, deal teams, territories) + M365/WorkIQ + the signal store. Alignment is read from real CRM.<span class="tag exists">EXISTS</span></div>
+      </div>
+      <div class="ev">
+        <div class="what">The shell</div>
+        <div class="have">One front door + four job‑modes composed from <span class="mono">surface-placement.json</span> — adding a persona dimension is a manifest edit, not a rebuild.<span class="tag exists">EXISTS</span></div>
+      </div>
+      <div class="ev">
+        <div class="what">The build engine</div>
+        <div class="have">The recipe runner (use case → recipe → build → seed → run → package) is the seller's Compose mode, with tokenomics baked in.<span class="tag exists">EXISTS</span></div>
+      </div>
+      <div class="ev">
+        <div class="what">First agent shipped</div>
+        <div class="have"><b>Meeting Miner</b> mines new opportunities from existing meeting intelligence and stages them in CRM, approval‑gated. Tested on Pentair.<span class="tag done">SHIPPED</span></div>
+      </div>
+      <div class="ev">
+        <div class="what">A real book, harvested</div>
+        <div class="have">A <b>live book of business</b> from MSX (every deal + stakeholder), and <b>proven solutions harvested</b> into reusable patterns — each with its platform choice, the full‑license alternatives, and the components that made it land.<span class="tag done">SHIPPED</span></div>
+      </div>
+      <div class="ev">
+        <div class="what">Composable demos</div>
+        <div class="have">The <b>Demo Composition Model</b> — proven demos broken into composable parts by domain (Customer Service, Field Service). Select the parts → the engine hydrates consistent data + tailors the script → <b>demo ready day one</b>. The component library (Service Toolkit, Customer 360) is the most‑reused core.<span class="tag done">SHIPPED</span></div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:8px">
+      <p>The one honest gap: a <span class="mono">persona</span> profile + the routing that binds role → agents → MCEM → curated surfaces. <b>That's the next build — and it's on top of everything above.</b></p>
+    </div>
+  </div>
+</section>
+
+<section id="train">
+  <div class="wrap">
+    <span class="eyebrow">The release train — small, demoable, weekly</span>
+    <h2>From "runs my engagement" to "wraps the whole field."</h2>
+    <div class="arc-label">Arc 1 · prove the lifecycle for one persona (the seller)</div>
+    <div class="train">
+      <div class="rel"><span class="rid">R0</span><span class="rt"><b>One Front Door (Cohesion)</b> — meld + four job‑modes. <span class="muted">The foundation.</span></span></div>
+      <div class="rel"><span class="rid">R1</span><span class="rt"><b>Engagement Pack</b> — generate the facilitation guide + handover + architecture + deck from a recipe.</span></div>
+      <div class="rel"><span class="rid">R2–R5</span><span class="rt">Catalog live · demo‑ready data · account intelligence · first real build.</span></div>
+      <div class="rel"><span class="rid">R6</span><span class="rt"><b>Runs the engagement end‑to‑end</b> <span class="muted">(v1.0)</span> — the lifecycle in the UI.</span></div>
+    </div>
+    <div class="arc-label">Arc 2 · MCAPS OS — wrap every persona <span class="muted" style="text-transform:none;font-weight:600">(ordered highest‑value‑down)</span></div>
+    <div class="train">
+      <div class="rel arc"><span class="rid">R7</span><span class="rt"><b>Persona Core</b> — role‑aware engine. <span class="muted">The gate everything inherits.</span></span></div>
+      <div class="rel arc"><span class="rid">R8</span><span class="rt"><b>Seller (STU) pack</b> — deepen the persona we are.</span></div>
+      <div class="rel arc"><span class="rid">R9</span><span class="rt"><b>ATU + CSU packs</b> — wrap the whole deal team; the handoffs light up.</span></div>
+      <div class="rel arc"><span class="rid">R10–R12</span><span class="rt">Flywheel · ambient/anywhere · <b>MCAPS OS as a product</b> <span class="muted">(v2.0 — other teams install it)</span>.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="job">
+  <div class="wrap">
+    <span class="eyebrow">Why this is the charter</span>
+    <h2>This isn't a tool. It's how the field sells.</h2>
+    <div class="statrow" style="margin:20px 0">
+      <div class="card stat"><div class="bignum">3</div><div class="lbl">units wrapped — ATU · STU · CSU</div></div>
+      <div class="card stat"><div class="bignum">11</div><div class="lbl">agents along the sell motion</div></div>
+      <div class="card stat"><div class="bignum">1</div><div class="lbl">engine — everything feeds it</div></div>
+      <div class="card stat"><div class="bignum">~7</div><div class="lbl">focus accounts · Pentair leads</div></div>
+    </div>
+    <div class="grid g3">
+      <div class="card"><span class="ico">🎯</span><h3>Strategic</h3><p>Put the whole field motion on one persona‑aware OS. That's an org capability — a charter, not a feature.</p></div>
+      <div class="card"><span class="ico">🧱</span><h3>Grounded</h3><p>Brains, data, spine, shell, engine are here. First agent shipped. The risk is adoption, not research.</p></div>
+      <div class="card"><span class="ico">📈</span><h3>Compounding</h3><p>Every persona, engagement, reuse, and feedback loop makes it more valuable. A growing, defensible asset.</p></div>
+    </div>
+    <div class="callout" style="margin-top:22px">
+      <p class="q">"I have the chance to create my own job at Microsoft — and it involves building this system to revolutionize how we sell."</p>
+      <p class="muted" style="margin-top:8px">MCAPS OS is that system. Recipe 3 — the persona‑wrapping motion — led with Jenna Donnahue. The vision is written, the engine is shipping, and the first agent is live.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <hr class="sep" />
+    <p><b>MCAPS OS</b> — persona‑wrapped operating system for how we sell · Recipe 3 · internal vision artifact.<br/>
+    Canon: <span class="mono">docs/se-os/MCAPS-OS-VISION.md</span> · <span class="mono">docs/se-os/MOONSHOTS.md</span> · <span class="mono">docs/se-os/RELEASE-PLAN.md</span>. Built for Bill Whalen. Theme: Clawpilot.</p>
+  </div>
+</footer>
+
+</body>
+</html>
